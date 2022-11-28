@@ -20,13 +20,15 @@ public class NoticiaController {
     public String create(Noticia noticia, Model model){
         model.addAttribute(noticia);
         service.saveNoticia(noticia);
-        return "prueba";
+        model.addAttribute("noticiaActive", "active");
+        return "noticia/prueba";
     }
 
     @GetMapping({"","/"})
     public String formNoticia(Model model){
         Noticia noticia = new Noticia();
         model.addAttribute(noticia);
+        model.addAttribute("noticiaActive", "active");
         return "noticia/formNoticia";
     }
 }

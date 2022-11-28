@@ -13,7 +13,9 @@
     <link rel="stylesheet" th:href="@{/css/add-cancha.css}"/>
     
 </head>
-	<div class="container">
+<div th:replace="shared/header.html :: header"></div>
+<body>
+    <div class="container">
     	<h1>Añadir nuevas canchas de Padel</h1>
           <br>
           <div class="row">
@@ -33,6 +35,5 @@
             </div>
           </div>
 	</div>
-<body>
 </body>
 </html>

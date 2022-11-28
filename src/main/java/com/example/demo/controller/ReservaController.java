@@ -32,6 +32,7 @@ public class ReservaController {
         model.addAttribute("horario", getHorario());
         model.addAttribute("reserva", new Reserva());
         model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
+        model.addAttribute("reservaActive", "active");
         return "reservas/lista";
     }
 
@@ -44,6 +45,7 @@ public class ReservaController {
         model.addAttribute("horario", getHorario());
         model.addAttribute("reserva", new Reserva());
         model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
+        model.addAttribute("reservaActive", "active");
         return "reservas/lista";
     }
     
@@ -51,6 +53,7 @@ public class ReservaController {
     public String misReservas(Model model) { 
         List<Reserva> reservas =  reservaService.listAll();
         model.addAttribute("reservas", reservas);
+        model.addAttribute("reservaActive", "active");
         return "reservas/mis-reservas";
     }
 

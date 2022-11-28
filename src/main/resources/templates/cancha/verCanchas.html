@@ -13,25 +13,27 @@
     <link rel="stylesheet" th:href="@{/css/canchas.css}"/>
     
 </head>
-	<div class="container">
-    <div class="col-md-12">
-        <div style="margin-left: 30px">
-            <h2>Mis Canchas</h2>
-        </div>
-        <br>
-        <div class="row">
-            <div th:each="cancha:${canchas}" class="col" style="text-align: center;">
-                <h3 th:text="${cancha.nombre}"></h3>
-                <img th:if="${cancha.estado == 'Habilitada'}" th:src="@{/imagenes/CanchaDePadel.png}" alt="" class="img-center">
-                <img th:unless="${cancha.estado == 'Habilitada'}" th:src="@{/imagenes/CanchaDePadelGris.png}" alt="" class="img-center">
-                <a th:if="${cancha.estado == 'Habilitada'}" th:href="@{'/cancha/Deshabilitar?id=' + ${cancha.id}}" class="btn btn-primary" type="button" >Deshabilitar</a>
-                <a th:unless="${cancha.estado == 'Habilitada'}" th:href="@{'/cancha/Habilitar?id=' + ${cancha.id}}" class="btn btn-primary" type="button" >Habilitar</a>
+<div th:replace="shared/header.html :: header"></div>
+
+<body>
+    <div class="container">
+        <div class="col-md-12">
+            <div style="margin-left: 30px">
+                <h2>Mis Canchas</h2>
+            </div>
+            <br>
+            <div class="row">
+                <div th:each="cancha:${canchas}" class="col" style="text-align: center;">
+                    <h3 th:text="${cancha.nombre}"></h3>
+                    <img th:if="${cancha.estado == 'Habilitada'}" th:src="@{/imagenes/CanchaDePadel.png}" alt="" class="img-center">
+                    <img th:unless="${cancha.estado == 'Habilitada'}" th:src="@{/imagenes/CanchaDePadelGris.png}" alt="" class="img-center">
+                    <a th:if="${cancha.estado == 'Habilitada'}" th:href="@{'/cancha/Deshabilitar?id=' + ${cancha.id}}" class="btn btn-primary" type="button" >Deshabilitar</a>
+                    <a th:unless="${cancha.estado == 'Habilitada'}" th:href="@{'/cancha/Habilitar?id=' + ${cancha.id}}" class="btn btn-primary" type="button" >Habilitar</a>
+                </div>
             </div>
         </div>
+        <a class="btn btn-primary" th:href="@{/cancha/Agregar}" >Crear Cancha</a>
     </div>
-    <a class="btn btn-primary" th:href="@{/cancha/Agregar}" >Crear Cancha</a>
-</div>
-<body>
 </body>
 </html>
 

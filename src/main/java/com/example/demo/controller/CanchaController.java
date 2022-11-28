@@ -26,6 +26,7 @@ public class CanchaController {
 	@GetMapping("/VerCanchas")
 	public String verCanchas(Model model) {
 		model.addAttribute("canchas",canchaService.listAll());
+		model.addAttribute("canchaActive", "active");
 		return "cancha/verCanchas";
 	}
 	@GetMapping("/Habilitar")
@@ -48,6 +49,7 @@ public class CanchaController {
 		int cantidad=canchaService.listAll().size();
 		model.addAttribute(cancha);
 		model.addAttribute(cantidad);
+		model.addAttribute("canchaActive", "active");
 		return "cancha/crearCancha";
 	}
 	@PostMapping("/save")
