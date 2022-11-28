@@ -23,7 +23,10 @@
                         <input class="form-control" name="date" type="date"  >
                     </div>
                     <div class="col-sm-2 ">
-                        <a type="button" class="btn btn-primary" > Mis reservas</a>
+                        <form th:action="@{/reserva/mis-reservas}" method="get">
+                            <button type="submit" class="btn btn-primary" > Mis reservas</button>
+                        </form>
+                       
                     </div>
                     <div class="col-sm-2 ">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -71,7 +74,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Agregar Reserva</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
