@@ -73,6 +73,7 @@ public class Cancha {
 	public List<Reserva> getReservas() {
 		return reservas;
 	}
+	
 
 	public void setReservas(List<Reserva> reservas) {
 		this.reservas = reservas;

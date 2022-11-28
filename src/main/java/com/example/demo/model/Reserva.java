@@ -78,8 +78,5 @@ public class Reserva {
 	public String toString() {
 		return "Reserva [idReserva=" + idReserva + ", fecha=" + fecha + ", horaInicio=" + horaInicio + ", estado="
 				+ estado + ", cancha=" + cancha + "]";
-	}
-
-	
-	
+	}	
 }
