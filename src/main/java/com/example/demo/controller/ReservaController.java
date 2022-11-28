@@ -10,8 +10,6 @@ import com.example.demo.model.Cancha;
 import com.example.demo.model.Reserva;
 import com.example.demo.services.CanchaServiceImplementation;
 import com.example.demo.services.ReservaServiceImplementation;
-
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,7 +38,6 @@ public class ReservaController {
     @PostMapping("/agregar")
     public String agregar(@ModelAttribute Reserva reserva ,Model model) {
         reservaService.saveReserva(reserva);
-
         List<Cancha> canchas = canchaService.listAll(); 
         List<Reserva> reservas =  reservaService.listAll();
         model.addAttribute("canchas", canchas);
@@ -48,6 +45,13 @@ public class ReservaController {
         model.addAttribute("reserva", new Reserva());
         model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
         return "reservas/lista";
+    }
+    
+    @GetMapping("/mis-reservas")
+    public String misReservas(Model model) { 
+        List<Reserva> reservas =  reservaService.listAll();
+        model.addAttribute("reservas", reservas);
+        return "reservas/mis-reservas";
     }
 
     public List<String[]> getHorarioResevas(List<Reserva> reservas, List<Cancha>canchas){
@@ -62,7 +66,6 @@ public class ReservaController {
             String[] arr = new String[reservasCancha.size()];
             lista.add(reservasCancha.toArray(arr));
         }
-        
         return lista;
     }
 
