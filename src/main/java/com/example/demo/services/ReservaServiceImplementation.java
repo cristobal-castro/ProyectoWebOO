@@ -1,11 +1,13 @@
 package com.example.demo.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.Reserva;
+import com.example.demo.repository.CanchaRepository;
 import com.example.demo.repository.ReservaRepository;
 @Service
 public class ReservaServiceImplementation implements ReservaService {
@@ -13,14 +15,27 @@ public class ReservaServiceImplementation implements ReservaService {
 	@Autowired
 	ReservaRepository reservaRepository;
 	
+	@Autowired
+	CanchaRepository canchaRepository;
+	
 	@Override
 	public List<Reserva> listAll() {
-		return reservaRepository.findAll();
+		try {
+			return reservaRepository.findAll();	
+		} catch (Exception e) {
+			System.out.println("Error en listAll: " + e.toString());
+		}
+		return new ArrayList<Reserva>();
 	}
 
 	@Override
 	public void saveReserva(Reserva reserva) {
-		reservaRepository.save(reserva);
+		try {
+			reservaRepository.save(reserva);	
+		} catch (Exception e) {
+			System.out.println("No se pudo guardar la reserva: " + e.toString());
+		}
+		
 
 	}
 

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Reservas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <div class="container pt-3">
+        <table class="table table-bordered">
+            <thead>
+                <th>Cancha</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Acción</th>
+            </thead>
+            <tbody>
+                <th:block th:each="reserva : ${reservas}">
+                    <tr>
+                        <td th:text="${reserva.cancha.nombre}"></td>
+                        <td th:text="${reserva.fecha}"></td>
+                        <td th:text="${reserva.horaInicio}"></td>
+                        <td> 
+                            <form action="@{/reserva/eliminar/reserva.id_reserva}" method="get">
+                                <button class="btn btn-warning"> Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                </th:block>
+            </tbody>
+
+            <tbody th:if="${#lists.size(reservas) == 0 }">
+                <tr>
+                    <td colspan="3"> La lista no tiene registros</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Ingresar Reserva 
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+           <form th:action="@{/reserva/agregar}" th:object="${reserva}" method="post">
+             <input type="date" pattern="yyyy-MM-dd" th:field="*{fecha}" />
+             <input type="time" th:field="*{horaInicio}" />
+             <input type="number" th:field="*{cancha}" />
+             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+              </div>
+            </form> 
+        </div>
+
+      </div>
+    </div>
+  </div>
+    </div>
+
+
+
+</body>
+
+</html>

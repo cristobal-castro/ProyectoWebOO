@@ -30,7 +30,7 @@ public class Cancha {
 	private String estado;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "cancha")
-	private List<Reserva> Reservas;
+	private List<Reserva> reservas;
 
 	public Cancha(String nombre,String estado) {
 		this.nombre = nombre;
@@ -49,11 +49,11 @@ public class Cancha {
 		this.id = id;
 	}
 
-	public String getName() {
+	public String getNombre() {
 		return nombre;
 	}
 
-	public void setName(String nombre) {
+	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
@@ -68,6 +68,14 @@ public class Cancha {
 	@Override
 	public String toString() {
 		return "Cancha [id=" + id + ", name=" + nombre + ", estado=" + estado + "]";
+	}
+
+	public List<Reserva> getReservas() {
+		return reservas;
+	}
+
+	public void setReservas(List<Reserva> reservas) {
+		this.reservas = reservas;
 	}
 	
 	
