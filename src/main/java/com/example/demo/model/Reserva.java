@@ -73,10 +73,19 @@ public class Reserva {
 	public void setCancha(Cancha cancha) {
 		this.cancha = cancha;
 	}
+	
 
 	@Override
 	public String toString() {
 		return "Reserva [idReserva=" + idReserva + ", fecha=" + fecha + ", horaInicio=" + horaInicio + ", estado="
 				+ estado + ", cancha=" + cancha + "]";
+	}
+
+	public Integer getIdReserva() {
+		return idReserva;
+	}
+
+	public void setIdReserva(Integer idReserva) {
+		this.idReserva = idReserva;
 	}	
 }
