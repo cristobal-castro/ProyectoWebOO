@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" th:href="@{/css/add-cancha.css}"/>
+    
+</head>
+	<div class="container">
+    	<h1>Añadir nuevas canchas de Padel</h1>
+          <br>
+          <div class="row">
+            <div class="col">
+                <img th:src="@{/imagenes/CanchaDePadel.png}" alt="">
+            </div>
+            <div class="col">
+                <form th:action="@{/cancha/save}" th:object="${cancha}" method="post">
+                    <div class="form-outline mb-4">
+                        <label class="form-label loginLabel" >Nombre Cancha:</label>
+                        <input  type="text" th:field="*{nombre}" class="form-control" id="add-cancha-input" placeholder="Nombre Cancha"/>
+                        <input type="hidden" th:field="*{estado}" />
+                        <span  class="badge badge-warning" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error CreatedAt</span></br>  
+                    </div>
+                    <button class="btn btn-primary" type="submit">Crear Cancha</button>
+                </form>
+            </div>
+          </div>
+	</div>
+<body>
+</body>
+</html>

@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name="cancha")
@@ -24,9 +25,9 @@ public class Cancha {
 	private Integer id;
 	
 	@NotEmpty
+	@NotNull
 	private String nombre;
 	
-	@NotEmpty
 	private String estado;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "cancha")
@@ -49,11 +50,11 @@ public class Cancha {
 		this.id = id;
 	}
 
-	public String getName() {
+	public String getNombre() {
 		return nombre;
 	}
 
-	public void setName(String nombre) {
+	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
