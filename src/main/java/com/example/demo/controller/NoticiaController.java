@@ -21,6 +21,7 @@ public class NoticiaController {
         model.addAttribute(noticia);
         service.saveNoticia(noticia);
         model.addAttribute("noticiaActive", "active");
+        model.addAttribute("noticias",service.listAll());
         return "noticia/prueba";
     }
 
@@ -33,7 +34,7 @@ public class NoticiaController {
     }
     @GetMapping({"","/verNoticias"})
     public String verNoticia(Model model){
-
+        
         model.addAttribute("noticias",service.listAll());
         model.addAttribute("noticiaActive", "active");
         return "noticia/prueba";
