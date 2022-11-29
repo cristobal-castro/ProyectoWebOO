@@ -80,8 +80,12 @@
         <div class="modal-body">
             <form th:action="@{/reserva/agregar}" th:object="${reserva}" method="post">
               <input type="date" pattern="yyyy-MM-dd" th:field="*{fecha}" />
-              <input type="time" th:field="*{horaInicio}" />
-              <input type="number" th:field="*{cancha}" />
+              <select th:field="*{horaInicio}" >
+                <th:block th:each="hora: ${horario}">
+                    <option th:value="${hora}"><span th:text="${hora}"></span></option>
+                </th:block>
+              </select>
+              <input type="number" th:field="*{cancha}" min="1" />
               <div class="modal-footer">
                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                  <button type="submit" class="btn btn-primary">Guardar</button>

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
 import com.example.demo.model.Cancha;
@@ -55,6 +56,16 @@ public class ReservaController {
         model.addAttribute("reservas", reservas);
         model.addAttribute("reservaActive", "active");
         return "reservas/mis-reservas";
+    }
+        
+    @GetMapping("/delete/{id}")
+    public String eliminar(@PathVariable Integer id,  Model model) { 
+        reservaService.deleteReserva(id);
+        List<Reserva> reservas =  reservaService.listAll();
+        model.addAttribute("reservas", reservas);
+        model.addAttribute("reservaActive", "active");
+
+        return "redirect:reservas/mis-reservas";
     }
 
     public List<String[]> getHorarioResevas(List<Reserva> reservas, List<Cancha>canchas){

@@ -34,7 +34,7 @@
                         <th scope="col">Cancha</th>
                         <th scope="col">Fecha</th>
                         <th scope="col">Hora</th>
-                        <th scope="col"></th>
+                        <th scope="col">Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -43,13 +43,17 @@
                             <td th:text="${reserva.cancha.id}"></td>
                             <td th:text="${#dates.format(reserva.fecha ,'dd-MM-yyyy' )}" ></td>
                             <td th:text="${reserva.horaInicio}" ></td>
-                            <td><button type="button" class="btn btn-danger" (click)="deleteReserva(reserva.id, reserva.jugador1)">Eliminar</button></td>
+                            <td><a  class="btn btn-danger" th:href="@{/reserva/delete/{id}(id=${reserva.idReserva})}">Eliminar</a></td>
                           </tr>
                     </tbody>
                   </table>
             </div>
         </div>
     </div>
+    <script>
+
+
+    </script>
 </body>
 
 </html>
