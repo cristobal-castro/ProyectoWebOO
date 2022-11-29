@@ -65,7 +65,7 @@ public class ReservaController {
         model.addAttribute("reservas", reservas);
         model.addAttribute("reservaActive", "active");
 
-        return "redirect:reservas/mis-reservas";
+        return "reservas/mis-reservas";
     }
 
     public List<String[]> getHorarioResevas(List<Reserva> reservas, List<Cancha>canchas){
