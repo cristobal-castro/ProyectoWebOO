@@ -13,3 +13,18 @@
     <link rel="stylesheet" th:href="@{/css/canchas.css}"/>
 </head>
 <div th:replace="shared/header.html :: header"></div>
+<body>
+<table class="table">
+    <thead>
+    <tr>
+    <th>name</th><th>description</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr th:each="noticia: ${noticias}">
+            <td th:text="${noticia.tituloNoticia}"></td>
+            <td th:text="${noticia.descripcionNoticia}"></td>
+        </tr>
+    </tbody>
+    </table>
+</body>

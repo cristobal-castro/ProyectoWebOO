@@ -31,4 +31,12 @@ public class NoticiaController {
         model.addAttribute("noticiaActive", "active");
         return "noticia/formNoticia";
     }
+    @GetMapping({"","/verNoticias"})
+    public String verNoticia(Model model){
+
+        model.addAttribute("noticias",service.listAll());
+        model.addAttribute("noticiaActive", "active");
+        return "noticia/prueba";
+    }
+
 }
