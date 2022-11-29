@@ -1,0 +1,61 @@
+<footer th:fragment="footer">
+    <!-------------------------------------------------------------->
+  <!-------------------------- Más info -------------------------->
+  <!-------------------------------------------------------------->
+  <style>
+    
+    .white-text{
+        color:white;
+    }
+    #btn-center{
+        width: 70%;
+        position:relative;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+    
+    #btn-white-border{
+        border-color: white;
+    
+        position:relative;
+        top: 25px;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
+    .azulito{
+        margin-top: 80px;
+        padding-top: 20px;
+        padding-bottom: 60px;
+        height:120px;
+        background-color:rgb(12,110,253);
+    }
+      </style>
+  <div class="azulito">
+    <p class="white-text" style="text-align: center;"> CLUB PADEL GO - Conoce nuestras instalaciones</p>
+    <a class="btn btn-outline-light" id="btn-white-border" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="text-align: center;"> Más Información</a>
+  </div>
+  <!-------------------------------------------------------------->
+  <!-------------------------- Sevicios -------------------------->
+  <!-------------------------------------------------------------->
+  <div class="row" style="margin-bottom: 20px;">
+    <div class="col-md-4"style="margin:auto;">
+        <!-------------------------------------------------------------->
+        <!-------------------------- Ubicación ------------------------->
+        <!-------------------------------------------------------------->
+        <h4 class="title-service" style="text-align: center;"> Ubicación</h4>
+        <hr>
+        <div class="info-card">
+          <div class="container text-center"style="margin:auto;">
+            <div class="row justify-content-md-center">
+              <iframe class="map" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAAgV8f75HXSFPvpkKxz71G3Fvq8MRuL0k&q=Universidad+del+Bío-Bío+Campus+Fernando+May+-+Av.+Andrés+Bello+720,+Chillan,+Chillán,+Bío+Bío" height="320" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>            
+          </div>
+         </div>
+    </div>
+  </div>
+
+</footer>
