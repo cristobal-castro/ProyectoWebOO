@@ -91,8 +91,8 @@ public class ReservaController {
     }
 
     @GetMapping("/mis-reservas")
-    public String misReservas(Model model) {
-        List<Reserva> reservas = reservaService.listAll();
+    public String misReservas(Model model, @CookieValue(value = "id", defaultValue = "-1") Integer idUser) {
+        List<Reserva> reservas = usuarioService.getById(idUser).getReservas();
         model.addAttribute("reservas", reservas);
         model.addAttribute("reservaActive", "active");
         return "reservas/mis-reservas";
