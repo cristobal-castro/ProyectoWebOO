@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
 import com.example.demo.model.Cancha;
 import com.example.demo.model.Reserva;
+import com.example.demo.model.Usuario;
 import com.example.demo.services.CanchaServiceImplementation;
 import com.example.demo.services.ReservaServiceImplementation;
+import com.example.demo.services.UsuarioServiceImplementation;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,10 +30,12 @@ public class ReservaController {
 
     @Autowired 
     private CanchaServiceImplementation canchaService;
-
+	
+	@Autowired
+	UsuarioServiceImplementation usuarioService;
 
     @GetMapping("/lista")
-    public String lista( Model model){
+    public String lista(@CookieValue(value = "id", defaultValue="0") String id,@CookieValue(value = "rol", defaultValue="0") String rol, Model model){
         List<Reserva> reservas =  reservaService.listAll();
         List<Cancha> canchas = canchaService.listAll(); 
         model.addAttribute("canchas", canchas);
@@ -39,11 +43,18 @@ public class ReservaController {
         model.addAttribute("reserva", new Reserva());
         model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
         model.addAttribute("reservaActive", "active");
+        
+        Usuario usuario = new Usuario();
+		usuario = usuarioService.getById(Integer.parseInt(id));
+		model.addAttribute("id", id);
+		model.addAttribute("rol", rol);
+		model.addAttribute("usuario", usuario);
+
         return "reservas/lista";
     }
 
     @PostMapping("/agregar")
-    public String agregar(@ModelAttribute Reserva reserva ,Model model) {
+    public String agregar(@CookieValue(value = "id", defaultValue="0") String id,@CookieValue(value = "rol", defaultValue="0") String rol,@ModelAttribute Reserva reserva ,Model model) {
         reservaService.saveReserva(reserva);
         List<Cancha> canchas = canchaService.listAll(); 
         List<Reserva> reservas =  reservaService.listAll();
@@ -52,23 +63,43 @@ public class ReservaController {
         model.addAttribute("reserva", new Reserva());
         model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
         model.addAttribute("reservaActive", "active");
+
+        Usuario usuario = new Usuario();
+		usuario = usuarioService.getById(Integer.parseInt(id));
+		model.addAttribute("id", id);
+		model.addAttribute("rol", rol);
+		model.addAttribute("usuario", usuario);
+
         return "reservas/lista";
     }
     
     @GetMapping("/mis-reservas")
-    public String misReservas(Model model) { 
+    public String misReservas(@CookieValue(value = "id", defaultValue="0") String id,@CookieValue(value = "rol", defaultValue="0") String rol,Model model) { 
         List<Reserva> reservas =  reservaService.listAll();
         model.addAttribute("reservas", reservas);
         model.addAttribute("reservaActive", "active");
+
+        Usuario usuario = new Usuario();
+		usuario = usuarioService.getById(Integer.parseInt(id));
+		model.addAttribute("id", id);
+		model.addAttribute("rol", rol);
+		model.addAttribute("usuario", usuario);
+
         return "reservas/mis-reservas";
     }
         
     @GetMapping("/delete/{id}")
-    public String eliminar(@PathVariable Integer id,  Model model) { 
+    public String eliminar(@CookieValue(value = "id", defaultValue="0") String id_cookie,@CookieValue(value = "rol", defaultValue="0") String rol,@PathVariable Integer id,  Model model) { 
         reservaService.deleteReserva(id);
         List<Reserva> reservas =  reservaService.listAll();
         model.addAttribute("reservas", reservas);
         model.addAttribute("reservaActive", "active");
+
+        Usuario usuario = new Usuario();
+		usuario = usuarioService.getById(Integer.parseInt(id_cookie));
+		model.addAttribute("id", id_cookie);
+		model.addAttribute("rol", rol);
+		model.addAttribute("usuario", usuario);
 
         return "reservas/mis-reservas";
     }

@@ -4,7 +4,7 @@
     <div class="col-12 col-md-6 mb-2">
       <img th:src="@{/imagenes/PadelGo.jpeg}"class="logo" width="200px">
     </div>
-    <div th:if="${id=='0'}" class="col-12 col-md-6">
+    <div th:if="${id=='0'||id==null}" class="col-12 col-md-6">
       <!-- botones -->
       <div class="row mb-4 mb-lg-0" style="width: 70%;position:relative;top: 50%;left: 50%;-ms-transform: translate(-50%, -50%);
                                             transform: translate(-50%, -50%);margin:auto;">
@@ -21,7 +21,7 @@
       </div>
      
     </div>
-    <div th:if="${rol=='1'}" class="col-12 col-md-6">
+    <div th:if="${id!=null&&id!='0'}" class="col-12 col-md-6">
       <div class="row mb-4 mb-lg-0" style="width: 70%;position:relative;top: 50%;left: 60%;-ms-transform: translate(-50%, -50%);
                                             transform: translate(-50%, -50%);margin:auto;">
         <div class="dropdown" >
@@ -36,9 +36,7 @@
         </div>
       </div>
     </div>
-    <div th:if="${rol=='2'}" class="col-12 col-md-6">
-      holi usuario generico
-    </div>
+
   </div>
   
 </div>
