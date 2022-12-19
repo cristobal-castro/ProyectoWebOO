@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
 import com.example.demo.model.Cancha;
 import com.example.demo.model.Reserva;
+import com.example.demo.model.Usuario;
 import com.example.demo.services.CanchaServiceImplementation;
 import com.example.demo.services.ReservaServiceImplementation;
+import com.example.demo.services.UsuarioServiceImplementation;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,6 +41,9 @@ public class ReservaController {
     @Autowired
     private CanchaServiceImplementation canchaService;
 
+    @Autowired
+    private UsuarioServiceImplementation usuarioService;
+
     @GetMapping("/lista")
     public String lista(Model model) {
         Calendar c = Calendar.getInstance();
@@ -45,7 +51,6 @@ public class ReservaController {
         System.out.println(startDate);
         Date date = new Date(startDate);
         List<Reserva> reservas= reservaService.filter(date);
-        if(reservas.isEmpty())System.out.println("ESTA VACIA");
         List<Cancha> canchas = canchaService.listHabilitadas("Habilitada");
         model.addAttribute("canchas", canchas);
         model.addAttribute("horario", getHorario());
@@ -60,22 +65,28 @@ public class ReservaController {
     public String agregar( Model model,
         @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha,
         @PathVariable int cancha,
-        @PathVariable String hora
+        @PathVariable String hora,
+        @CookieValue(value = "id", defaultValue = "-1") Integer idUser
         ) {
+        Usuario user = usuarioService.getById(idUser);
         Reserva reserva = new Reserva();
-        reserva.setCancha(canchaService.getById(cancha));
-        reserva.setFecha(fecha);
-        reserva.setHoraInicio(hora);
-        reservaService.saveReserva(reserva);
-        System.out.println("Funca hasta aca");
-        List<Cancha> canchas = canchaService.listHabilitadas("Habilitada");
-        List<Reserva> reservas = reservaService.filter(reserva.getFecha());
-        model.addAttribute("canchas", canchas);
-        model.addAttribute("horario", getHorario());
-        model.addAttribute("reserva", new Reserva());
-        model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
-        model.addAttribute("reservaActive", "active");
-        model.addAttribute("fecha", reserva.getFecha());
+        if(user!=null){
+            reserva.setCancha(canchaService.getById(cancha));
+            reserva.setFecha(fecha);
+            reserva.setHoraInicio(hora);
+            reserva.setUsuario(user);
+            reservaService.saveReserva(reserva);
+            System.out.println("Funca hasta aca");
+            List<Cancha> canchas = canchaService.listHabilitadas("Habilitada");
+            List<Reserva> reservas = reservaService.filter(reserva.getFecha());
+            model.addAttribute("canchas", canchas);
+            model.addAttribute("horario", getHorario());
+            model.addAttribute("reserva", new Reserva());
+            model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
+            model.addAttribute("reservaActive", "active");
+            model.addAttribute("fecha", reserva.getFecha());
+        }
+
         return "reservas/lista";
     }
 
