@@ -47,11 +47,14 @@ public class Usuario {
 	@Column(name="rol")
 	private Integer rol;
 
+	@Column(name="estado")
+	private String estado;
+	
 	public Usuario() {
 	}
 	
 	public Usuario(Integer id, @NotNull String rut, @NotNull String nombre, @NotNull String apellido,
-			@NotNull String genero, @NotNull @Email String correo, @NotNull String password, Integer rol) {
+			@NotNull String genero, @NotNull @Email String correo, @NotNull String password, Integer rol, String estado) {
 		this.id = id;
 		this.rut = rut;
 		this.nombre = nombre;
@@ -60,6 +63,7 @@ public class Usuario {
 		this.correo = correo;
 		this.password = password;
 		this.rol = rol;
+		this.estado = estado;
 	}
 
 
@@ -68,6 +72,12 @@ public class Usuario {
 	public Integer getId() {
 		return id;
 	}
+public String getEstado() {
+	return estado;
+}
+public void setEstado(String estado) {
+	this.estado = estado;
+}
 
 	public void setId(Integer id) {
 		this.id = id;
