@@ -4,7 +4,6 @@ function getReservaPorFecha(elemnt){
 }
 function reserva(hora, cancha, fecha){
     console.log(hora)
-
     fetch("/reserva/agregar/" + fecha+"/"+cancha+"/"+hora,{
         method:'POST'
     })

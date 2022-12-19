@@ -1,10 +1,15 @@
 package com.example.demo.model;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -47,6 +52,9 @@ public class Usuario {
 	@Column(name="rol")
 	private Integer rol;
 
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "usuario")
+	private List<Reserva> reservas;
+	
 	public Usuario() {
 	}
 	
@@ -61,9 +69,6 @@ public class Usuario {
 		this.password = password;
 		this.rol = rol;
 	}
-
-
-
 
 	public Integer getId() {
 		return id;
@@ -127,6 +132,14 @@ public class Usuario {
 
 	public void setRol(Integer rol) {
 		this.rol = rol;
+	}
+
+	public List<Reserva> getReservas() {
+		return reservas;
+	}
+
+	public void setReservas(List<Reserva> reservas) {
+		this.reservas = reservas;
 	}
 	
 	

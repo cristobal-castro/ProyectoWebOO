@@ -42,6 +42,11 @@ public class Reserva {
 	@JoinColumn(name = "id_cancha")
 	private Cancha cancha;
 
+	@ManyToOne(fetch = FetchType.LAZY)	
+	@JoinColumn(name = "id_usuario")
+	private Usuario usuario;
+
+
 	public Date getFecha() {
 		return fecha;
 	}
@@ -87,5 +92,13 @@ public class Reserva {
 
 	public void setIdReserva(Integer idReserva) {
 		this.idReserva = idReserva;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}	
 }
