@@ -39,7 +39,7 @@ jobs:
        host: ${{env.HOST}}
        username: ${{ env.USERNAME }}
        port: ${{ env.PORT }}
-       key: ${{ secrets.SSHKEY }}
+       key: ${{ secrets.SECRET }}
        source: "target/*.jar"
        target: "prueba"
        
@@ -48,5 +48,5 @@ jobs:
       with:
        HOST: ${{env.HOST}}
        USER: ${{ env.USERNAME }} 
-       PRIVATE_SSH_KEY: ${{ secrets.SSHKEY }}
+       PRIVATE_SSH_KEY: ${{ secrets.SECRET }}
        COMMAND: ls
