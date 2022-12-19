@@ -20,7 +20,8 @@
                 <div class="form-group row">
                     <label for="fecha" class="col-sm-4 " style="width:100px;font-size:large;"><b>Fechas:</b></label>
                     <div class="col-sm-4 ">
-                        <input class="form-control" name="date" type="date"  >
+                            <input class="form-control" name="fecha" type="date"  onchange="getReservaPorFecha(this)" th:value="${#dates.format(fecha, 'yyyy-MM-dd')}" >
+                            
                     </div>
                     <div class="col-sm-2 ">
                         <form th:action="@{/reserva/mis-reservas}" method="get">
@@ -28,12 +29,7 @@
                         </form>
                        
                     </div>
-                    <div class="col-sm-2 ">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Nueva Reserva
-                          </button>
-                          
-                    </div>
+  
                     
                 </div>
             </div>
@@ -46,7 +42,11 @@
                     <h3  th:text="${cancha.nombre}"></h3>
                     <div class="col-12 horario" th:each="hora : ${horario}">
                             <a th:if="${#lists.contains(horarioReserva.get(index.index), hora)}" class="horaRed" ><span th:text="${hora}"></span> X</a>
-                            <a th:if="${!#lists.contains(horarioReserva.get(index.index), hora)}" class="hora"  ><span th:text="${hora}"></span> R<i class="fa fa-solid fa-check"></i></a>
+                            <a  th:if="${!#lists.contains(horarioReserva.get(index.index), hora)}" class="hora" 
+                            th:attr="onclick=|reserva('${hora}', ${cancha.id},'${#dates.format(fecha, 'yyyy-MM-dd')}' )|" 
+                            >
+                                <span th:text="${hora}"></span> R<i class="fa fa-solid fa-check"></i>
+                             </a>
                     </div>
                 </div>
             </div>
@@ -70,32 +70,10 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Agregar Reserva</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form th:action="@{/reserva/agregar}" th:object="${reserva}" method="post">
-              <input type="date" pattern="yyyy-MM-dd" th:field="*{fecha}" />
-              <select th:field="*{horaInicio}" >
-                <th:block th:each="hora: ${horario}">
-                    <option th:value="${hora}"><span th:text="${hora}"></span></option>
-                </th:block>
-              </select>
-              <input type="number" th:field="*{cancha}" min="1" />
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cerrar</button>
-                 <button type="submit" class="btn btn-primary">Guardar</button>
-               </div>
-             </form> 
-         </div>
-      </div>
-    </div>
-  </div>
+
+  <script type="text/javascript" th:src="@{/reservas/js/reserva.js}"></script>
 </body>
+
 <div th:replace="shared/footer.html :: footer"></div>
 </html>
 

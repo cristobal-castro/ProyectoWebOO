@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,71 +17,107 @@ import com.example.demo.services.ReservaServiceImplementation;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.io.Console;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequestMapping("/reserva")
 public class ReservaController {
-    @Autowired 
+    @Autowired
     private ReservaServiceImplementation reservaService;
 
-    @Autowired 
+    @Autowired
     private CanchaServiceImplementation canchaService;
 
-
     @GetMapping("/lista")
-    public String lista( Model model){
-        List<Reserva> reservas =  reservaService.listAll();
-        List<Cancha> canchas = canchaService.listAll(); 
+    public String lista(Model model) {
+        Calendar c = Calendar.getInstance();
+        String startDate = c.get(Calendar.YEAR)+"/"+(c.get(Calendar.MONTH) + 1)+"/"+c.get(Calendar.DATE);
+        System.out.println(startDate);
+        Date date = new Date(startDate);
+        List<Reserva> reservas= reservaService.filter(date);
+        if(reservas.isEmpty())System.out.println("ESTA VACIA");
+        List<Cancha> canchas = canchaService.listHabilitadas("Habilitada");
         model.addAttribute("canchas", canchas);
         model.addAttribute("horario", getHorario());
         model.addAttribute("reserva", new Reserva());
         model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
         model.addAttribute("reservaActive", "active");
+        model.addAttribute("fecha", date);
         return "reservas/lista";
     }
 
-    @PostMapping("/agregar")
-    public String agregar(@ModelAttribute Reserva reserva ,Model model) {
+    @PostMapping("/agregar/{fecha}/{cancha}/{hora}")
+    public String agregar( Model model,
+        @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha,
+        @PathVariable int cancha,
+        @PathVariable String hora
+        ) {
+        Reserva reserva = new Reserva();
+        reserva.setCancha(canchaService.getById(cancha));
+        reserva.setFecha(fecha);
+        reserva.setHoraInicio(hora);
         reservaService.saveReserva(reserva);
-        List<Cancha> canchas = canchaService.listAll(); 
-        List<Reserva> reservas =  reservaService.listAll();
+        System.out.println("Funca hasta aca");
+        List<Cancha> canchas = canchaService.listHabilitadas("Habilitada");
+        List<Reserva> reservas = reservaService.filter(reserva.getFecha());
         model.addAttribute("canchas", canchas);
         model.addAttribute("horario", getHorario());
         model.addAttribute("reserva", new Reserva());
         model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
         model.addAttribute("reservaActive", "active");
+        model.addAttribute("fecha", reserva.getFecha());
         return "reservas/lista";
     }
-    
+
     @GetMapping("/mis-reservas")
-    public String misReservas(Model model) { 
-        List<Reserva> reservas =  reservaService.listAll();
+    public String misReservas(Model model) {
+        List<Reserva> reservas = reservaService.listAll();
         model.addAttribute("reservas", reservas);
         model.addAttribute("reservaActive", "active");
         return "reservas/mis-reservas";
     }
-        
+
     @GetMapping("/delete/{id}")
-    public String eliminar(@PathVariable Integer id,  Model model) { 
+    public String eliminar(@PathVariable Integer id, Model model) {
         reservaService.deleteReserva(id);
-        List<Reserva> reservas =  reservaService.listAll();
+        List<Reserva> reservas = reservaService.listAll();
         model.addAttribute("reservas", reservas);
         model.addAttribute("reservaActive", "active");
 
         return "reservas/mis-reservas";
     }
 
-    public List<String[]> getHorarioResevas(List<Reserva> reservas, List<Cancha>canchas){
+    @GetMapping("/lista/{fecha}")
+    public String filter(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha, Model model) {
+        List<Reserva> reservas= reservaService.filter(fecha);
+        List<Cancha> canchas = canchaService.listHabilitadas("Habilitada");
+        model.addAttribute("canchas", canchas);
+        model.addAttribute("horario", getHorario());
+        model.addAttribute("reserva", new Reserva());
+        model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
+        model.addAttribute("reservaActive", "active");
+        model.addAttribute("fecha", fecha);
+        return "reservas/lista";
+    }
+
+    public List<String[]> getHorarioResevas(List<Reserva> reservas, List<Cancha> canchas) {
         List<String[]> lista = new ArrayList<>();
-        for(Cancha cancha:canchas){
+        for (Cancha cancha : canchas) {
             List<String> reservasCancha = new ArrayList<>();
             for (Reserva reserva : reservas) {
-                    if(reserva.getCancha().getId() == cancha.getId()){
-                        reservasCancha.add(reserva.getHoraInicio());
-                    }
+                if (reserva.getCancha().getId() == cancha.getId()) {
+                    reservasCancha.add(reserva.getHoraInicio());
+                }
             }
             String[] arr = new String[reservasCancha.size()];
             lista.add(reservasCancha.toArray(arr));
@@ -88,7 +125,7 @@ public class ReservaController {
         return lista;
     }
 
-    public List<String> getHorario(){
+    public List<String> getHorario() {
         List<String> lista = new ArrayList<>();
         lista.add("08:00");
         lista.add("09:20");
@@ -104,6 +141,4 @@ public class ReservaController {
         return lista;
     }
 
-
-    
 }
