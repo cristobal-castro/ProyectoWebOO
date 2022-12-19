@@ -47,7 +47,7 @@ public class Noticia {
         this.tituloNoticia=tituloNoticia;
         this.descripcionNoticia=descripcionNoticia;
         this.fechaInicio=fechaInicio;
-        this.fechaFin=this.fechaFin;
+        this.fechaFin=fechaFin;
     }
 
     public int getIdNoticia() {
