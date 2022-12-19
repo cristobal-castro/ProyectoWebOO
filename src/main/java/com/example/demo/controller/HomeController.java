@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,14 +23,29 @@ public class HomeController {
 	UsuarioServiceImplementation usuarioService;
 
     @GetMapping("/")
-	public String verCanchas(Model model) {
+	public String verCanchas(@CookieValue(value = "id", defaultValue="0") String id,@CookieValue(value = "rol", defaultValue="0") String rol,  Model model) {
+		
         model.addAttribute("homeActive", "active");
+
+		Usuario usuario = new Usuario();
+		usuario = usuarioService.getById(Integer.parseInt(id));
+		model.addAttribute("id", id);
+		model.addAttribute("rol", rol);
+		model.addAttribute("usuario", usuario);
 		return "home";
 	}
     
     @GetMapping("/login")
     public String login(Model model) {
     	return "login";
+    }
+	@GetMapping("/logout")
+    public String logout(Model model,HttpServletResponse response) {
+		Cookie id = new Cookie("id", null);
+		Cookie rol = new Cookie("rol", null);
+		response.addCookie(id);
+		response.addCookie(rol);
+    	return "redirect:/";
     }
     @PostMapping("/verificar")
     public String verificar(Model model,@RequestParam String correo,@RequestParam String password,HttpServletResponse response) {
@@ -63,4 +79,6 @@ public class HomeController {
     	response.addCookie(cookie);
     	return "redirect:/";
     }
+
+
 }

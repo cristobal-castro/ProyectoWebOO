@@ -4,22 +4,40 @@
     <div class="col-12 col-md-6 mb-2">
       <img th:src="@{/imagenes/PadelGo.jpeg}"class="logo" width="200px">
     </div>
-    <div class="col-12 col-md-6">
+    <div th:if="${id=='0'}" class="col-12 col-md-6">
       <!-- botones -->
       <div class="row mb-4 mb-lg-0" style="width: 70%;position:relative;top: 50%;left: 50%;-ms-transform: translate(-50%, -50%);
-                                            transform: translate(-50%, -50%);margin:auto;" *ngIf="!this.loginService.loggedIn()">
+                                            transform: translate(-50%, -50%);margin:auto;">
         <div class="col-4 m-4">
-          <button class="btn btn-primary" id="btn-center">
+          <a type="button" th:href="@{/registro}" class="btn btn-primary" id="btn-center">
             Registrarse
-          </button>
+          </a>
         </div>
         <div class="col-4 m-4">
-          <button class="btn btn-primary" th:href="@{'/login'}"  id="btn-center">
+          <a type="button" class="btn btn-primary" th:href="@{'/login'}"  id="btn-center">
             Ingresar
-          </button>
+          </a>
         </div>
       </div>
      
+    </div>
+    <div th:if="${rol=='1'}" class="col-12 col-md-6">
+      <div class="row mb-4 mb-lg-0" style="width: 70%;position:relative;top: 50%;left: 60%;-ms-transform: translate(-50%, -50%);
+                                            transform: translate(-50%, -50%);margin:auto;">
+        <div class="dropdown" >
+          <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle pe-4" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+              <img th:src="@{/imagenes/user-placeholder.png}" alt="" width="32" height="32" class="rounded-circle me-2">
+              <strong th:text="${usuario.correo}"></strong>
+          </a>
+          <ul class=" dropdown-menu dropdown-menu-end text-small" aria-labelledby="dropdownUser" data-popper-placement="bottom-end" >
+              <li><a class="dropdown-item" href="#">Editar Perfil</a></li>
+              <li><a class="dropdown-item" th:href="@{/logout}">Cerrar Sesión</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div th:if="${rol=='2'}" class="col-12 col-md-6">
+      holi usuario generico
     </div>
   </div>
   
