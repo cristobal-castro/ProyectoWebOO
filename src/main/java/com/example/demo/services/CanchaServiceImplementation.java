@@ -34,4 +34,10 @@ public class CanchaServiceImplementation implements CanchaService {
 		return canchaRepository.getById(id);
 	}
 
+	@Override
+	public List<Cancha> listHabilitadas(String estado) {
+		// TODO Auto-generated method stub
+		return canchaRepository.findByEstado(estado);
+	}
+
 }
