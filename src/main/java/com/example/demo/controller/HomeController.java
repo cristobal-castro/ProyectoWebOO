@@ -16,14 +16,13 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class HomeController {
-	
-	
+
 	
 	@Autowired
 	UsuarioServiceImplementation usuarioService;
 
     @GetMapping("/")
-	public String verCanchas(@CookieValue(value = "id", defaultValue="0") String id,@CookieValue(value = "rol", defaultValue="0") String rol,  Model model) {
+	public String home(@CookieValue(value = "id", defaultValue="0") String id,@CookieValue(value = "rol", defaultValue="0") String rol,  Model model) {
 		
         model.addAttribute("homeActive", "active");
 
@@ -35,6 +34,18 @@ public class HomeController {
 		return "home";
 	}
     
+    @GetMapping("/contacto")
+	public String contacto(@CookieValue(value = "id", defaultValue="0") String id,@CookieValue(value = "rol", defaultValue="0") String rol,  Model model) {
+		
+        model.addAttribute("homeActive", "active");
+
+		Usuario usuario = new Usuario();
+		usuario = usuarioService.getById(Integer.parseInt(id));
+		model.addAttribute("id", id);
+		model.addAttribute("rol", rol);
+		model.addAttribute("usuario", usuario);
+		return "contacto/contacto";
+	}
     @GetMapping("/login")
     public String login(Model model) {
     	return "login";
