@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,17 @@ public class ReservaServiceImplementation implements ReservaService {
 	@Override
 	public Reserva getById(Integer id) {
 		return reservaRepository.getById(id);
+	}
+
+	@Override
+	public List<Reserva> filter(Date fecha) {
+		// TODO Auto-generated method stub
+		return reservaRepository.findByFecha(fecha);
+	}
+
+	@Override
+	public List<Reserva> listByDate(String fecha) {
+		return reservaRepository.findReservaByFecha(fecha);
 	}
 
 }

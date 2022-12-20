@@ -9,4 +9,5 @@ public interface CanchaService {
 	void saveCancha(Cancha cancha);
 	void deleteCancha(Integer id);
 	Cancha getById(Integer id);
+	List<Cancha> listHabilitadas(String estado);
 }
