@@ -3,8 +3,6 @@ package com.example.demo.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import org.hibernate.annotations.GenerationTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
@@ -52,8 +50,9 @@ public class Noticia {
         this.tituloNoticia=tituloNoticia;
         this.descripcionNoticia=descripcionNoticia;
         this.fechaInicio=fechaInicio;
-        this.fechaFin=this.fechaFin;
+        this.fechaFin= fechaFin;
         this.imgNoticia = imgNoticia;
+
     }
 
     public int getIdNoticia() {

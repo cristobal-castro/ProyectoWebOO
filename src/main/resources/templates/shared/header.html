@@ -4,28 +4,44 @@
     <div class="col-12 col-md-6 mb-2">
       <img th:src="@{/imagenes/PadelGo.jpeg}"class="logo" width="200px">
     </div>
-    <div class="col-12 col-md-6">
+    <div th:if="${id=='0'||id==null}" class="col-12 col-md-6">
       <!-- botones -->
       <div class="row mb-4 mb-lg-0" style="width: 70%;position:relative;top: 50%;left: 50%;-ms-transform: translate(-50%, -50%);
-                                            transform: translate(-50%, -50%);margin:auto;" *ngIf="!this.loginService.loggedIn()">
+                                            transform: translate(-50%, -50%);margin:auto;">
         <div class="col-4 m-4">
-          <button class="btn btn-primary" id="btn-center">
+          <a type="button" th:href="@{/registro}" class="btn btn-primary" id="btn-center">
             Registrarse
-          </button>
+          </a>
         </div>
         <div class="col-4 m-4">
-          <button class="btn btn-primary" th:href="@{'/login'}"  id="btn-center">
+          <a type="button" class="btn btn-primary" th:href="@{'/login'}"  id="btn-center">
             Ingresar
-          </button>
+          </a>
         </div>
       </div>
      
     </div>
+    <div th:if="${id!=null&&id!='0'}" class="col-12 col-md-6">
+      <div class="row mb-4 mb-lg-0" style="width: 70%;position:relative;top: 50%;left: 60%;-ms-transform: translate(-50%, -50%);
+                                            transform: translate(-50%, -50%);margin:auto;">
+        <div class="dropdown" >
+          <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle pe-4" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+              <img th:src="@{/imagenes/user-placeholder.png}" alt="" width="32" height="32" class="rounded-circle me-2">
+              <strong th:text="${usuario.correo}"></strong>
+          </a>
+          <ul class=" dropdown-menu dropdown-menu-end text-small" aria-labelledby="dropdownUser" data-popper-placement="bottom-end" >
+              <li><a class="dropdown-item" href="#">Editar Perfil</a></li>
+              <li><a class="dropdown-item" th:href="@{/logout}">Cerrar Sesión</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
   </div>
   
 </div>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav th:if="${rol=='1'}"class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
     <a class="navbar-brand" th:href="@{'/'}" >Padel GO</a>
     <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,6 +63,27 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" th:href="@{'/perfil'}" th:classappend="${noticiaActive}"> Mi Perfil</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<nav th:if="${rol!='1'}"class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{'/'}" >Padel GO</a>
+    <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse" id="navbarColor02">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item" >
+          <a class="nav-link" th:href="@{'/'}"  th:classappend="${homeActive}"> Inicio </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{'/reserva/lista'}" th:classappend="${reservaActive}"> Reservas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{'/noticia/verNoticias'}" th:classappend="${noticiaActive}"> Noticias</a>
         </li>
       </ul>
     </div>

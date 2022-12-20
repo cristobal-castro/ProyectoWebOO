@@ -34,12 +34,23 @@ public class UsuarioServiceImplementation implements UsuarioService {
 
 	@Override
 	public Usuario getById(Integer id) {
-		return usuarioRepository.getById(id);
+		try {
+			return usuarioRepository.getById(id);	
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
+		
 	}
 
 	@Override
 	public Usuario findByCorreo(String correo) {
-		return usuarioRepository.findByCorreo(correo);
+		try {
+			return usuarioRepository.findByCorreo(correo);	
+		} catch (Exception e) {
+			return null;
+		}
+		
 	}
 
 }

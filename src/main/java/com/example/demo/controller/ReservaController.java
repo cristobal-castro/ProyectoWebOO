@@ -1,12 +1,10 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
@@ -16,21 +14,11 @@ import com.example.demo.model.Usuario;
 import com.example.demo.services.CanchaServiceImplementation;
 import com.example.demo.services.ReservaServiceImplementation;
 import com.example.demo.services.UsuarioServiceImplementation;
-
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-
-import java.io.Console;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequestMapping("/reserva")
@@ -40,23 +28,35 @@ public class ReservaController {
 
     @Autowired
     private CanchaServiceImplementation canchaService;
-
     @Autowired
-    private UsuarioServiceImplementation usuarioService;
+	private UsuarioServiceImplementation usuarioService;
 
     @GetMapping("/lista")
-    public String lista(Model model) {
+    public String lista(
+            @CookieValue(value = "id", defaultValue="0") String id,
+            @CookieValue(value = "rol", defaultValue="0") String rol,
+            Model model){
+
         Calendar c = Calendar.getInstance();
         String startDate = c.get(Calendar.YEAR)+"/"+(c.get(Calendar.MONTH) + 1)+"/"+c.get(Calendar.DATE);
         Date date = new Date(startDate);
-        List<Reserva> reservas= reservaService.filter(date);
-        List<Cancha> canchas = canchaService.listHabilitadas("Habilitada");
+        List<Reserva> reservas =  reservaService.listAll();
+        List<Cancha> canchas = canchaService.listAll(); 
         model.addAttribute("canchas", canchas);
         model.addAttribute("horario", getHorario());
         model.addAttribute("reserva", new Reserva());
         model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
         model.addAttribute("reservaActive", "active");
         model.addAttribute("fecha", date);
+        
+        
+        Usuario usuario = usuarioService.getById(Integer.parseInt(id));
+        System.out.println((usuario==null));
+        if(usuario!=null){
+            model.addAttribute("id", id);
+            model.addAttribute("rol", rol);
+            model.addAttribute("usuario", usuario);
+        }
         return "reservas/lista";
     }
 
@@ -65,9 +65,10 @@ public class ReservaController {
         @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha,
         @PathVariable int cancha,
         @PathVariable String hora,
-        @CookieValue(value = "id", defaultValue = "-1") Integer idUser
+        @CookieValue(value = "id", defaultValue="0") String id,
+        @CookieValue(value = "rol", defaultValue="0") String rol
         ) {
-        Usuario user = usuarioService.getById(idUser);
+        Usuario user = usuarioService.getById(Integer.parseInt(id));
         Reserva reserva = new Reserva();
         if(user!=null){
             reserva.setCancha(canchaService.getById(cancha));
@@ -75,7 +76,6 @@ public class ReservaController {
             reserva.setHoraInicio(hora);
             reserva.setUsuario(user);
             reservaService.saveReserva(reserva);
-            System.out.println("Funca hasta aca");
             List<Cancha> canchas = canchaService.listHabilitadas("Habilitada");
             List<Reserva> reservas = reservaService.filter(reserva.getFecha());
             model.addAttribute("canchas", canchas);
@@ -85,24 +85,54 @@ public class ReservaController {
             model.addAttribute("reservaActive", "active");
             model.addAttribute("fecha", reserva.getFecha());
         }
+        Usuario usuario = new Usuario();
+		usuario = usuarioService.getById(Integer.parseInt(id));
+		model.addAttribute("id", id);
+		model.addAttribute("rol", rol);
+		model.addAttribute("usuario", usuario);
 
         return "reservas/lista";
     }
 
+
+
     @GetMapping("/mis-reservas")
-    public String misReservas(Model model) {
-        List<Reserva> reservas = reservaService.listAll();
+    public String misReservas(
+            @CookieValue(value = "id", defaultValue="0") String id,
+            @CookieValue(value = "rol", defaultValue="0") String rol,
+            Model model) {
+
+        List<Reserva> reservas =  reservaService.listAll();
         model.addAttribute("reservas", reservas);
         model.addAttribute("reservaActive", "active");
+
+        Usuario usuario = new Usuario();
+		usuario = usuarioService.getById(Integer.parseInt(id));
+		model.addAttribute("id", id);
+		model.addAttribute("rol", rol);
+		model.addAttribute("usuario", usuario);
+
         return "reservas/mis-reservas";
     }
 
     @GetMapping("/delete/{id}")
-    public String eliminar(@PathVariable Integer id, Model model) {
+    public String eliminar(
+            @CookieValue(value = "id", defaultValue="0") String id_cookie,
+            @CookieValue(value = "rol", defaultValue="0") String rol, 
+            @PathVariable Integer id,  
+            Model model) {
+
         reservaService.deleteReserva(id);
         List<Reserva> reservas = reservaService.listAll();
         model.addAttribute("reservas", reservas);
         model.addAttribute("reservaActive", "active");
+
+        Usuario usuario = new Usuario();
+		usuario = usuarioService.getById(Integer.parseInt(id_cookie));
+		model.addAttribute("id", id_cookie);
+		model.addAttribute("rol", rol);
+		model.addAttribute("usuario", usuario);
+        
 
         return "reservas/mis-reservas";
     }
