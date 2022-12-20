@@ -48,7 +48,6 @@ public class ReservaController {
     public String lista(Model model) {
         Calendar c = Calendar.getInstance();
         String startDate = c.get(Calendar.YEAR)+"/"+(c.get(Calendar.MONTH) + 1)+"/"+c.get(Calendar.DATE);
-        System.out.println(startDate);
         Date date = new Date(startDate);
         List<Reserva> reservas= reservaService.filter(date);
         List<Cancha> canchas = canchaService.listHabilitadas("Habilitada");
