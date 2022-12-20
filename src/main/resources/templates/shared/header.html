@@ -30,7 +30,7 @@
               <strong th:text="${usuario.correo}"></strong>
           </a>
           <ul class=" dropdown-menu dropdown-menu-end text-small" aria-labelledby="dropdownUser" data-popper-placement="bottom-end" >
-              <li><a class="dropdown-item" href="#">Editar Perfil</a></li>
+              <li><a class="dropdown-item" th:href="@{'/perfil'}">Editar Perfil</a></li>
               <li><a class="dropdown-item" th:href="@{/logout}">Cerrar Sesión</a></li>
           </ul>
         </div>
@@ -77,7 +77,31 @@
     </div>
   </div>
 </nav>
-<nav th:if="${rol!='1'}"class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav th:if="${rol!='1'&&id!=null}"class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{'/'}" >Padel GO</a>
+    <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse" id="navbarColor02">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item" >
+          <a class="nav-link" th:href="@{'/'}"  th:classappend="${homeActive}"> Inicio </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{'/reserva/lista'}" th:classappend="${reservaActive}"> Reservas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{'/noticia/verNoticias'}" th:classappend="${noticiaActive}"> Noticias</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{'/perfil'}" th:classappend="${noticiaActive}"> Mi Perfil</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<nav th:if="${rol!='1'&&(id==null||id=='0')}"class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
     <a class="navbar-brand" th:href="@{'/'}" >Padel GO</a>
     <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">

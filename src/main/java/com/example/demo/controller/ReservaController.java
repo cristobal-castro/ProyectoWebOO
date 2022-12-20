@@ -51,12 +51,9 @@ public class ReservaController {
         
         
         Usuario usuario = usuarioService.getById(Integer.parseInt(id));
-        System.out.println((usuario==null));
-        if(usuario!=null){
-            model.addAttribute("id", id);
-            model.addAttribute("rol", rol);
-            model.addAttribute("usuario", usuario);
-        }
+        model.addAttribute("id", id);
+        model.addAttribute("rol", rol);
+        model.addAttribute("usuario", usuario);
         return "reservas/lista";
     }
 
@@ -85,11 +82,9 @@ public class ReservaController {
             model.addAttribute("reservaActive", "active");
             model.addAttribute("fecha", reserva.getFecha());
         }
-        Usuario usuario = new Usuario();
-		usuario = usuarioService.getById(Integer.parseInt(id));
 		model.addAttribute("id", id);
 		model.addAttribute("rol", rol);
-		model.addAttribute("usuario", usuario);
+		model.addAttribute("usuario", user);
 
         return "reservas/lista";
     }
