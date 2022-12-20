@@ -138,7 +138,11 @@ public class ReservaController {
     }
 
     @GetMapping("/lista/{fecha}")
-    public String filter(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha, Model model) {
+    public String filter(
+            @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha,
+            @CookieValue(value = "id", defaultValue="0") String id_cookie,
+            @CookieValue(value = "rol", defaultValue="0") String rol,  
+            Model model) {
         List<Reserva> reservas= reservaService.filter(fecha);
         List<Cancha> canchas = canchaService.listHabilitadas("Habilitada");
         model.addAttribute("canchas", canchas);
@@ -147,6 +151,13 @@ public class ReservaController {
         model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
         model.addAttribute("reservaActive", "active");
         model.addAttribute("fecha", fecha);
+
+        Usuario usuario = new Usuario();
+		usuario = usuarioService.getById(Integer.parseInt(id_cookie));
+		model.addAttribute("id", id_cookie);
+		model.addAttribute("rol", rol);
+		model.addAttribute("usuario", usuario);
+        
         return "reservas/lista";
     }
 
