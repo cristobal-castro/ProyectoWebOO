@@ -31,6 +31,7 @@ public class CanchaServiceImplementation implements CanchaService {
 
 	@Override
 	public Cancha getById(Integer id) {
+		
 		return canchaRepository.getById(id);
 	}
 

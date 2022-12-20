@@ -24,7 +24,6 @@
         <tr th:each="noticia: ${noticias}">
             <td th:text="${noticia.tituloNoticia}"></td>
             <td th:text="${noticia.descripcionNoticia}"></td>
-            <td> <img th:src="@{${noticia.imgNoticia}}"></td>
         </tr>
     </tbody>
     </table>

@@ -57,9 +57,4 @@ public class ReservaServiceImplementation implements ReservaService {
 		return reservaRepository.findByFecha(fecha);
 	}
 
-	@Override
-	public List<Reserva> listByDate(String fecha) {
-		return reservaRepository.findReservaByFecha(fecha);
-	}
-
 }
