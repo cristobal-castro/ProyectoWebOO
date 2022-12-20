@@ -36,20 +36,16 @@ public class Noticia {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private String fechaFin;
 
-    @Column(name ="img_noticia")
-    private String imgNoticia;
-
-    
-
     public Noticia(){
 
     }
 
-    public Noticia(int idNoticia,String tituloNoticia, String descripcionNoticia, String fechaInicio, String fechaFin, String imgNoticia){
+    public Noticia(int idNoticia,String tituloNoticia, String descripcionNoticia, String fechaInicio, String fechaFin){
         this.idNoticia = idNoticia;
         this.tituloNoticia=tituloNoticia;
         this.descripcionNoticia=descripcionNoticia;
         this.fechaInicio=fechaInicio;
+
         this.fechaFin= fechaFin;
         this.imgNoticia = imgNoticia;
 
@@ -84,14 +80,6 @@ public class Noticia {
     }
     public void setFechaFin(String fechaFin) {
         this.fechaFin = fechaFin;
-    }
-
-    public String getImgNoticia() {
-        return imgNoticia;
-    }
-
-    public void setImgNoticia(String imgNoticia) {
-        this.imgNoticia = imgNoticia;
     }
 
     public void setFechaActual(){

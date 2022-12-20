@@ -9,7 +9,6 @@ public interface ReservaService {
 	
 	List<Reserva> listAll();
 	List<Reserva> filter(Date fecha);
-	List<Reserva> listByDate(String fecha);
 	void saveReserva(Reserva reserva);
 	void deleteReserva(Integer id);
 	Reserva getById(Integer id);
