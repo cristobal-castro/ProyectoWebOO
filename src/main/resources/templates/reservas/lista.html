@@ -24,7 +24,7 @@
                             
                     </div>
                     <div class="col-sm-2 ">
-                        <form th:action="@{/reserva/mis-reservas}" method="get">
+                        <form th:if="${id!=null&&id!='0'}" th:action="@{/reserva/mis-reservas}" method="get">
                             <button type="submit" class="btn btn-primary" > Mis reservas</button>
                         </form>
                        

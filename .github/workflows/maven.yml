@@ -13,9 +13,9 @@ env:
   HOST: pacheco.chillan.ubiobio.cl
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "dev" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "dev" ]
 
 jobs:
   build:
@@ -53,10 +53,3 @@ jobs:
        source: "Dockerfile"
        target: "prueba"
        
-    - name: SSH Command
-      uses: D3rHase/ssh-command-action@v0.2.1
-      with:
-       HOST: ${{env.HOST}}
-       USER: ${{ env.USERNAME }} 
-       PRIVATE_SSH_KEY: ${{ secrets.SECRET }}
-       COMMAND: ls
