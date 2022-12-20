@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -51,8 +52,13 @@ public class ReporteController {
 	}
 	
 	@GetMapping("/usuario")
-	public String reporteUsuario(Model model) {
+	public String reporteUsuario(@CookieValue(value = "id", defaultValue="0") String id,@CookieValue(value = "rol", defaultValue="0") String rol,Model model) {
 		model.addAttribute("usuarios",usuarioService.listAll());
+		Usuario usuario = new Usuario();
+		usuario = usuarioService.getById(Integer.parseInt(id));
+		model.addAttribute("id", id);
+		model.addAttribute("rol", rol);
+		model.addAttribute("usuario", usuario);
 		return "reporte/reporteUsuario";
 	}
 	
@@ -80,12 +86,17 @@ public class ReporteController {
 	
 	
 	@GetMapping("/reserva")
-	public String reporteReserva(Model model) {
+	public String reporteReserva(@CookieValue(value = "id", defaultValue="0") String id,@CookieValue(value = "rol", defaultValue="0") String rol,Model model) {
 		Calendar c = Calendar.getInstance();
         String startDate = c.get(Calendar.YEAR)+"/"+(c.get(Calendar.MONTH) + 1)+"/"+c.get(Calendar.DATE);
         
 		List<Reserva> reservaList = reservaService.listByDate(startDate);
 		model.addAttribute("reservas",reservaList);
+		Usuario usuario = new Usuario();
+		usuario = usuarioService.getById(Integer.parseInt(id));
+		model.addAttribute("id", id);
+		model.addAttribute("rol", rol);
+		model.addAttribute("usuario", usuario);
 		return "reporte/reporteReserva";
 	}
 	
