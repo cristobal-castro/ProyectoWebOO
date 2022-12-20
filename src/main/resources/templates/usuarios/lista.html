@@ -17,14 +17,19 @@
 <table class="table">
     <thead>
     <tr>
-    <th>name</th><th>description</th>
+    <th>Rut</th><th>Nombre</th><th>Apellido</th><th>Genero</th><th>Correo Electrónico</th>
     </tr>
     </thead>
     <tbody>
-        <tr th:each="noticia: ${noticias}">
-            <td th:text="${noticia.tituloNoticia}"></td>
-            <td th:text="${noticia.descripcionNoticia}"></td>
-            <td> <img th:src="@{${noticia.imgNoticia}}"></td>
+        <tr th:each="usuario: ${usuarios}">
+            <td th:text="${usuario.rut}"></td>
+            <td th:text="${usuario.nombre}"></td>
+            <td th:text="${usuario.apellido}"></td>
+            <td th:text="${usuario.genero}"></td>
+            <td th:text="${usuario.correo}"></td>
+            <td th:if="${usuario.estado == 'Deshabilitado'}"><a th:href="@{'/usuario/Habilitar?id=' + ${usuario.id}}" class="btn btn-primary"> Habilitar Usuario</a></td>
+            <td th:unless="${usuario.estado == 'Deshabilitado'}"><a th:href="@{'/usuario/Deshabilitar?id=' + ${usuario.id}}" class="btn btn-danger"> Deshabilitar Usuario</a></td>
+            
         </tr>
     </tbody>
     </table>
