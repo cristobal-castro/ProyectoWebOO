@@ -13,9 +13,9 @@ env:
   HOST: pacheco.chillan.ubiobio.cl
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "dev" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "dev" ]
 
 jobs:
   build:
