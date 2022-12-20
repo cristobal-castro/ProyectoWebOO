@@ -42,11 +42,11 @@
                 <div class="col-12 col-lg-5 col-xl-4" style="text-align: center;" th:each="cancha, index : ${canchas}" >
                     <h3  th:text="${cancha.nombre}"></h3>
                     <div class="col-12 horario" th:each="hora : ${horario}">
-                            <a th:if="${#lists.contains(horarioReserva.get(index.index), hora)}" class="horaRed" ><span th:text="${hora}"></span> X</a>
+                            <a th:if="${#lists.contains(horarioReserva.get(index.index), hora)}" class="horaRed" ><span th:text="${hora}"></span> <i class="fa-solid fa-x"></i> </a>
                             <a  th:if="${!#lists.contains(horarioReserva.get(index.index), hora)}" class="hora" 
                             th:attr="onclick=|reserva('${hora}', ${cancha.id},'${#dates.format(fecha, 'yyyy-MM-dd')}' )|" 
                             >
-                                <span th:text="${hora}"></span> R<i class="fa fa-solid fa-check"></i>
+                                <span th:text="${hora}"></span><i class="fa fa-solid fa-check"></i>
                              </a>
                     </div>
                 </div>
@@ -57,13 +57,13 @@
                 <div class="col-12 col-sm-6">
                     <div class="row justify-content-center">
                         <p class="col-10" style="background-color: rgb(0, 189, 25);width: 25px;height: 25px;"></p>
-                        <p class="col-2" style="font-size: large;">Desocupado</p>
+                        <p class="col-2" style="font-size: large;">Habilitado</p>
                     </div>
                 </div>
                 <div class="col-12 col-sm-6">
                     <div class="row justify-content-center">
                         <p class="col-10" style="background-color: rgb(192, 0, 0);width: 25px;height: 25px;"></p>
-                        <p class="col-2" style="font-size: large;">Ocupado</p>
+                        <p class="col-2" style="font-size: large;">Reservado</p>
                     </div>
                 </div>
             </div>
