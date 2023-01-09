@@ -37,7 +37,10 @@ public class Reserva {
 	private String horaInicio;
 	
 	private String estado;
-	
+	private Integer nivel;
+	private Integer categoria;
+	private Integer tipo;
+
 	@ManyToOne(fetch = FetchType.LAZY)	
 	@JoinColumn(name = "id_cancha")
 	private Cancha cancha;
