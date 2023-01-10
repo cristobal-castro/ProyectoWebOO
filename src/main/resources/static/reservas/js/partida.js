@@ -27,7 +27,7 @@ function reserva(elemento, h, c, f){
 function imp(){
     Swal.fire({
         title: '¿Quieres reservar la partida?',
-        text: "Te vamos a robar",
+        text: "Podras jugar con otros jugadores ",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
