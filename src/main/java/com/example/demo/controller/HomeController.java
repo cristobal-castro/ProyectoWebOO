@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.model.Usuario;
+import com.example.demo.services.EmailServiceImplementation;
 import com.example.demo.services.UsuarioServiceImplementation;
 
 import jakarta.servlet.http.Cookie;
@@ -20,6 +21,8 @@ public class HomeController {
 	
 	@Autowired
 	UsuarioServiceImplementation usuarioService;
+	@Autowired
+    private EmailServiceImplementation emailService;
 
     @GetMapping("/")
 	public String home(@CookieValue(value = "id", defaultValue="0") String id,@CookieValue(value = "rol", defaultValue="0") String rol,  Model model) {
@@ -91,5 +94,10 @@ public class HomeController {
     	return "redirect:/";
     }
 
+    @GetMapping("/email")
+    public String emailTest(){
+        this.emailService.sendEmail("padel.go.cli@gmail.com");
+        return "redirect:/";
+    }
 
 }

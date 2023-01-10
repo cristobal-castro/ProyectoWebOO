@@ -12,8 +12,12 @@ import com.example.demo.model.Cancha;
 import com.example.demo.model.Reserva;
 import com.example.demo.model.Usuario;
 import com.example.demo.services.CanchaServiceImplementation;
+import com.example.demo.services.EmailServiceImplementation;
 import com.example.demo.services.ReservaServiceImplementation;
 import com.example.demo.services.UsuarioServiceImplementation;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,11 +29,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class ReservaController {
     @Autowired
     private ReservaServiceImplementation reservaService;
-
     @Autowired
     private CanchaServiceImplementation canchaService;
     @Autowired
 	private UsuarioServiceImplementation usuarioService;
+    @Autowired
+    private EmailServiceImplementation emailService;
 
     @GetMapping("/lista")
     public String lista(
@@ -40,6 +45,8 @@ public class ReservaController {
         Calendar c = Calendar.getInstance();
         String startDate = c.get(Calendar.YEAR)+"/"+(c.get(Calendar.MONTH) + 1)+"/"+c.get(Calendar.DATE);
         Date date = new Date(startDate);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
+        String strDate = dateFormat.format(date); 
         List<Reserva> reservas =  reservaService.listAll();
         List<Cancha> canchas = canchaService.listAll(); 
         model.addAttribute("canchas", canchas);
@@ -54,7 +61,7 @@ public class ReservaController {
         model.addAttribute("id", id);
         model.addAttribute("rol", rol);
         model.addAttribute("usuario", usuario);
-        return "reservas/lista";
+        return "redirect:./lista/"+strDate;
     }
 
     @PostMapping("/agregar/{fecha}/{cancha}/{hora}")
@@ -98,7 +105,14 @@ public class ReservaController {
             Model model) {
 
         List<Reserva> reservas =  reservaService.listAll();
-        model.addAttribute("reservas", reservas);
+        List<Reserva> misReservas = new ArrayList<>();
+
+        for (Reserva reserva : reservas) {
+            if(""+reserva.getUsuario().getId()==id){
+                misReservas.add(reserva);
+            }
+        }
+        model.addAttribute("reservas", misReservas);
         model.addAttribute("reservaActive", "active");
 
         Usuario usuario = new Usuario();
@@ -156,6 +170,8 @@ public class ReservaController {
         return "reservas/lista";
     }
 
+
+
     public List<String[]> getHorarioResevas(List<Reserva> reservas, List<Cancha> canchas) {
         List<String[]> lista = new ArrayList<>();
         for (Cancha cancha : canchas) {
@@ -186,5 +202,6 @@ public class ReservaController {
         lista.add("20:20");
         return lista;
     }
+
 
 }
