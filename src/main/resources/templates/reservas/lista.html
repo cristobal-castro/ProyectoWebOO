@@ -56,20 +56,26 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-lg-5 col-xl-4" style="text-align: center;" th:each="cancha, index : ${canchas}" >
-                    <h3  th:text="${cancha.nombre}"></h3>
-                    <div class="col-12 horario" th:each="hora : ${horario}">
-                            <a th:if="${#lists.contains(horarioReserva.get(index.index), hora)}" class="horaRed" 
-                            data-bs-toggle="tooltip" data-bs-placement="top" title="Reservada"
-                            ><span th:text="${hora}"></span> <i class="fa  fa-ban"></i></a>
-                            <a  th:if="${!#lists.contains(horarioReserva.get(index.index), hora)}" class="hora" 
-                            th:attr="onclick=|reserva('${hora}', ${cancha.id},'${#dates.format(fecha, 'yyyy-MM-dd')}' )|" 
-                            data-bs-toggle="tooltip" data-bs-placement="top" title="Disponible"
-                            >
-                                <span th:text="${hora}"></span> <i class="fa  fa-clock"></i>
-                             </a>
+                <th:block th:each="cancha, index : ${canchas}">
+                    <th:block th:if= "${cancha.estado}== 'Habilitada'">
+                        <div  class="col-12 col-lg-5 col-xl-4" style="text-align: center;"  >
+                            <h3  th:text="${cancha.nombre}"></h3>
+                            <div class="col-12 horario" th:each="hora : ${horario}">
+                                    <a th:if="${#lists.contains(horarioReserva.get(index.index), hora)}" class="horaRed" 
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Reservada"
+                                    ><span th:text="${hora}"></span> <i class="fa  fa-ban"></i></a>
+                                    <a  th:if="${!#lists.contains(horarioReserva.get(index.index), hora)}" class="hora" 
+                                    th:attr="onclick=|reserva('${hora}', ${cancha.id},'${#dates.format(fecha, 'yyyy-MM-dd')}' )|" 
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Disponible"
+                                    >
+                                        <span th:text="${hora}"></span> <i class="fa  fa-clock"></i>
+                                     </a>
+                            </div>
                     </div>
-                </div>
+                    </th:block>
+
+                </th:block>
+
             </div>
         </div>
 

@@ -63,3 +63,39 @@ function imp(){
 
 
 }
+
+function ingresar(id){
+    Swal.fire({
+        title: '¿Quieres unirte a esta partida?',
+        text: "Vamos a jugar",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, unirme!',
+        cancelButtonText: 'No'
+      }).then((result) => {
+        if (result.isConfirmed ) {
+            fetch("/partida/addJugador/" + id,{
+                method:'GET'
+            })
+            .then(function(res){ 
+
+                window.location.href = "/partida/lista";
+                Swal.fire(
+                    'Cancha reservada!',
+                    'Tu ingreso se a registrado .',
+                    'success'
+                  )
+            })
+            .catch(function(res){ 
+                Swal.fire(
+                    'Ooop .. !',
+                    'Acaba de ocurrir un problema.',
+                    'error'
+                  )
+
+             })
+        }
+  })}
+
