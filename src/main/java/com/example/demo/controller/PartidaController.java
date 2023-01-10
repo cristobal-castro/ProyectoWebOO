@@ -14,11 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.demo.model.Cancha;
-import com.example.demo.model.Partida;
 import com.example.demo.model.Reserva;
 import com.example.demo.model.Usuario;
 import com.example.demo.services.CanchaServiceImplementation;
-import com.example.demo.services.PartidaServiceImplementation;
 import com.example.demo.services.ReservaServiceImplementation;
 import com.example.demo.services.UsuarioServiceImplementation;
 
@@ -34,27 +32,26 @@ public class PartidaController {
     @Autowired
 	private UsuarioServiceImplementation usuarioService;
 
-    @Autowired
-	private PartidaServiceImplementation partidaService;
+
     
 
     @GetMapping("/lista")
-    public String listas(Model model){
+    public String listas(
+        Model model,
+        @CookieValue(value = "id", defaultValue = "0") String id_cookie,
+        @CookieValue(value = "rol", defaultValue = "0") String rol
+        ){
         return "partida/lista";
     }
 
-    @GetMapping("/formulario")
-    public String formulario(Model model){
-        model.addAttribute("reserva", new Reserva());
-        return "partida/create";
-    }
 
     @GetMapping("/reservar")
-    public String crear(Model model, Reserva reserva){
-        System.out.println("---------------------------------------------------");
-        System.out.println("URL: /reserva ");
-        System.out.println("Reserva:: " + reserva.toString());
-        System.out.println("---------------------------------------------------");
+    public String crear(
+        Model model, 
+        Reserva reserva,
+        @CookieValue(value = "id", defaultValue = "0") String id_cookie,
+        @CookieValue(value = "rol", defaultValue = "0") String rol
+        ){
         model.addAttribute("partida", reserva);
 
         Calendar c = Calendar.getInstance();
@@ -68,31 +65,72 @@ public class PartidaController {
         model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
         model.addAttribute("reservaActive", "active");
         model.addAttribute("fecha", date);
-
+        Usuario usuario = new Usuario();
+		usuario = usuarioService.getById(Integer.parseInt(id_cookie));
+		model.addAttribute("id", id_cookie);
+		model.addAttribute("rol", rol);
+		model.addAttribute("usuario", usuario);
         return "partida/listaHora";
     }
     @GetMapping("/listaHora")
-    public String lista(Model model, Reserva reserva){
-        System.out.println("---------------------------------------------------");
-        System.out.println("URL: /listaHora ");
-        System.out.println("Reserva:: " + reserva.toString());
-        System.out.println("---------------------------------------------------");
-
+    public String lista(
+        Model model, 
+        Reserva reserva,
+        @CookieValue(value = "id", defaultValue = "0") String id_cookie,
+        @CookieValue(value = "rol", defaultValue = "0") String rol
+        ){
+        Usuario usuario = new Usuario();
+		usuario = usuarioService.getById(Integer.parseInt(id_cookie));
+		model.addAttribute("id", id_cookie);
+		model.addAttribute("rol", rol);
+		model.addAttribute("usuario", usuario);
         return "partida/listaHora";
     }
     @PostMapping("/reservar")
-    public String agregar(Model model, Reserva reserva){
+    public String agregar(
+        Model model, 
+        Reserva reserva,
+        @CookieValue(value = "id", defaultValue = "0") String id_cookie,
+        @CookieValue(value = "rol", defaultValue = "0") String rol
+        ){
         Usuario user = usuarioService.getById(2);
-        System.out.println("##############################################");
         //System.out.println(user.toString());
         reserva.setUsuario(user);
         reserva.setTipo(1);
+        reserva.getJuagadores().add(user);
         Reserva r = reservaService.saveReserva(reserva);
-        partidaService.savePartida(user, r);
-        System.out.println("LA RESERVA SE A GUARDADO CON EXITO");
-        return "redirect:/";
+
+        Usuario usuario = new Usuario();
+		usuario = usuarioService.getById(Integer.parseInt(id_cookie));
+		model.addAttribute("id", id_cookie);
+		model.addAttribute("rol", rol);
+		model.addAttribute("usuario", usuario);
+        return "redirect:/partida/lista";
     }
 
+    @GetMapping("/lista/{fecha}")
+    public String filter(
+            @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha,
+            @CookieValue(value = "id", defaultValue="0") String id_cookie,
+            @CookieValue(value = "rol", defaultValue="0") String rol,  
+            Model model) {
+        List<Reserva> reservas= reservaService.filter(fecha);
+        List<Cancha> canchas = canchaService.listHabilitadas("Habilitada");
+        model.addAttribute("canchas", canchas);
+        model.addAttribute("horario", getHorario());
+        model.addAttribute("partida", new Reserva());
+        model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
+        model.addAttribute("reservaActive", "active");
+        model.addAttribute("fecha", fecha);
+
+        Usuario usuario = new Usuario();
+		usuario = usuarioService.getById(Integer.parseInt(id_cookie));
+		model.addAttribute("id", id_cookie);
+		model.addAttribute("rol", rol);
+		model.addAttribute("usuario", usuario);
+        
+        return "partida/listaHora";
+    }
 
     public List<String> getHorario() {
         List<String> lista = new ArrayList<>();
@@ -123,30 +161,6 @@ public class PartidaController {
             lista.add(reservasCancha.toArray(arr));
         }
         return lista;
-    }
-
-    @GetMapping("/lista/{fecha}")
-    public String filter(
-            @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha,
-            @CookieValue(value = "id", defaultValue="0") String id_cookie,
-            @CookieValue(value = "rol", defaultValue="0") String rol,  
-            Model model) {
-        List<Reserva> reservas= reservaService.filter(fecha);
-        List<Cancha> canchas = canchaService.listHabilitadas("Habilitada");
-        model.addAttribute("canchas", canchas);
-        model.addAttribute("horario", getHorario());
-        model.addAttribute("partida", new Reserva());
-        model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
-        model.addAttribute("reservaActive", "active");
-        model.addAttribute("fecha", fecha);
-
-        Usuario usuario = new Usuario();
-		usuario = usuarioService.getById(Integer.parseInt(id_cookie));
-		model.addAttribute("id", id_cookie);
-		model.addAttribute("rol", rol);
-		model.addAttribute("usuario", usuario);
-        
-        return "partida/listaHora";
     }
 
 }

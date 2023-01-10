@@ -2,11 +2,16 @@ package com.example.demo.model;
 
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.format.annotation.DateTimeFormat;
 
-
+import jakarta.annotation.Nullable;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,6 +19,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -31,14 +38,28 @@ public class Reserva {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date fecha;
 	
-	
+	@JoinTable(
+        name = "reserva_usuario",
+        joinColumns = @JoinColumn(name = "id_reserva", nullable = false),
+        inverseJoinColumns = @JoinColumn(name="id_usuario", nullable = false)
+    )
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Usuario> juagadores;
+
 	@Column(name="hora_inicio")
 	@NotNull
 	private String horaInicio;
-	
+
+	@Column()
 	private String estado;
+
+	@Column()
 	private Integer nivel;
+
+	@Column()
 	private Integer categoria;
+
+	@Column()
 	private Integer tipo;
 
 	public Integer getNivel() {
@@ -102,6 +123,21 @@ public class Reserva {
 		return cancha;
 	}
 
+	public Reserva() {
+	}
+
+	public Reserva(Date fecha, @NotNull String horaInicio, String estado, Integer nivel, Integer categoria,
+			Integer tipo, Cancha cancha, Usuario usuario) {
+		this.fecha = fecha;
+		this.horaInicio = horaInicio;
+		this.estado = estado;
+		this.nivel = nivel;
+		this.categoria = categoria;
+		this.tipo = tipo;
+		this.cancha = cancha;
+		this.usuario = usuario;
+	}
+
 	public void setCancha(Cancha cancha) {
 		this.cancha = cancha;
 	}
@@ -127,5 +163,16 @@ public class Reserva {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public List<Usuario> getJuagadores() {
+		if(juagadores==null){
+			return new ArrayList<Usuario>();
+		}
+		return juagadores;
+	}
+
+	public void setJuagadores(List<Usuario> juagadores) {
+		this.juagadores = juagadores;
 	}	
 }

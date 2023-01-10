@@ -25,14 +25,41 @@ function reserva(elemento, h, c, f){
     cancha= cancha
 }
 function imp(){
-    let formulario = document.getElementById("formulario");
-    let inputcancha =document.getElementById("cancha")
-    let inputHora =document.getElementById("horaInicio")
-    let inputfecha =document.getElementById("fecha")
-    inputcancha.setAttribute("value", cancha)
-    inputHora.setAttribute("value", hora)
-    inputfecha.setAttribute("value", fecha)
-    console.log(formulario)
-    formulario.submit();
+    Swal.fire({
+        title: '¿Quieres reservar la partida?',
+        text: "Te vamos a robar",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, reservar!',
+        cancelButtonText: 'No'
+      }).then((result) => {
+        if (result.isConfirmed && elementoSelect) {
+            let formulario = document.getElementById("formulario");
+            let inputcancha =document.getElementById("cancha")
+            let inputHora =document.getElementById("horaInicio")
+            let inputfecha =document.getElementById("fecha")
+            inputcancha.setAttribute("value", cancha)
+            inputHora.setAttribute("value", hora)
+            inputfecha.setAttribute("value", fecha)
+            console.log(formulario)
+            Swal.fire(
+                'Partida reservada!',
+                'Tu partida se a reservado .',
+                'success'
+              )
+            
+            formulario.submit();
+        }else{
+            Swal.fire(
+                'Debes selecionar una hora!',
+                'Tu partida no se puedo reservar.',
+                'error'
+              )
+        }
+      })
+
+
 
 }

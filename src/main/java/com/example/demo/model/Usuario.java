@@ -9,6 +9,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
@@ -54,6 +55,9 @@ public class Usuario {
 
 	@Column(name="estado")
 	private String estado;
+	
+	@ManyToMany(mappedBy = "juagadores")
+    private List<Reserva> partidas;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "usuario")
 	private List<Reserva> reservas;
@@ -157,8 +161,9 @@ public void setEstado(String estado) {
 	public String toString() {
 		return "Usuario [id=" + id + ", rut=" + rut + ", nombre=" + nombre + ", apellido=" + apellido + ", genero="
 				+ genero + ", correo=" + correo + ", password=" + password + ", rol=" + rol + ", estado=" + estado
-				+ ", reservas=" + reservas + "]";
+				+ "]";
 	}
+
 	
 	
 	

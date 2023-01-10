@@ -65,13 +65,20 @@ public class ReservaController {
         @CookieValue(value = "id", defaultValue="0") String id,
         @CookieValue(value = "rol", defaultValue="0") String rol
         ) {
+        
         Usuario user = usuarioService.getById(Integer.parseInt(id));
+        if(user==null){
+            System.out.println("USUARIO == null");
+        }else{
+            System.out.println(user.toString());
+        }
         Reserva reserva = new Reserva();
         if(user!=null){
             reserva.setCancha(canchaService.getById(cancha));
             reserva.setFecha(fecha);
             reserva.setHoraInicio(hora);
             reserva.setUsuario(user);
+            System.out.println(reserva.toString());
             reservaService.saveReserva(reserva);
             List<Cancha> canchas = canchaService.listHabilitadas("Habilitada");
             List<Reserva> reservas = reservaService.filter(reserva.getFecha());
@@ -81,7 +88,7 @@ public class ReservaController {
             model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
             model.addAttribute("reservaActive", "active");
             model.addAttribute("fecha", reserva.getFecha());
-        }
+        } 
 		model.addAttribute("id", id);
 		model.addAttribute("rol", rol);
 		model.addAttribute("usuario", user);
@@ -96,8 +103,8 @@ public class ReservaController {
             @CookieValue(value = "id", defaultValue="0") String id,
             @CookieValue(value = "rol", defaultValue="0") String rol,
             Model model) {
-
-        List<Reserva> reservas =  reservaService.listAll();
+        Usuario user = usuarioService.getById(Integer.parseInt(id));
+        List<Reserva> reservas = user.getReservas();
         model.addAttribute("reservas", reservas);
         model.addAttribute("reservaActive", "active");
 
@@ -118,15 +125,16 @@ public class ReservaController {
             Model model) {
 
         reservaService.deleteReserva(id);
-        List<Reserva> reservas = reservaService.listAll();
-        model.addAttribute("reservas", reservas);
-        model.addAttribute("reservaActive", "active");
+  
 
         Usuario usuario = new Usuario();
 		usuario = usuarioService.getById(Integer.parseInt(id_cookie));
 		model.addAttribute("id", id_cookie);
 		model.addAttribute("rol", rol);
 		model.addAttribute("usuario", usuario);
+        List<Reserva> reservas = usuario.getReservas();
+        model.addAttribute("reservas", reservas);
+        model.addAttribute("reservaActive", "active");
         
 
         return "reservas/mis-reservas";
