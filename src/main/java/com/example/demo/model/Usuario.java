@@ -153,7 +153,8 @@ public class Usuario {
 
 	public List<Reserva> getReservas() {
 		if(reservas==null) return new ArrayList<Reserva>();
-		return reservas;
+
+		return reservas.stream().filter( i-> i.getTipo()==null).toList();
 	}
 
 	public void setReservas(List<Reserva> reservas) {
@@ -165,11 +166,13 @@ public class Usuario {
 	}
 
 	
+
+
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", rut=" + rut + ", nombre=" + nombre + ", apellido=" + apellido + ", genero="
 				+ genero + ", correo=" + correo + ", password=" + password + ", rol=" + rol + ", estado=" + estado
-				+ "]";
+				+ ", partidas=" + partidas + ", reservas=" + reservas + "]";
 	}
 
 	public List<Reserva> getPartidas() {

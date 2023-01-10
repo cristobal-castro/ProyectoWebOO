@@ -56,6 +56,9 @@
           <a class="nav-link" th:href="@{'/reserva/lista'}" th:classappend="${reservaActive}"> Reservas</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" th:href="@{'/partida/lista'}" th:classappend="${partidaActive}"> Partida</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" th:href="@{'/cancha/VerCanchas'}" th:classappend="${canchaActive}"> Canchas</a>
         </li>
         <li class="nav-item">
@@ -68,7 +71,7 @@
           <a class="nav-link" th:href="@{'/reporte/usuario'}" th:classappend="${usuarioActive}"> Reporte Usuarios</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" th:href="@{'/reporte/reserva'}" th:classappend="${reservaActive}"> Reporte Reserva</a>
+          <a class="nav-link" th:href="@{'/reporte/reserva'}" th:classappend="${reporteActive}"> Reporte Reserva</a>
         </li>
       </ul>
     </div>

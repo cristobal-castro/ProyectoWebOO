@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.WebProperties.Resources.Chain.Strategy;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -36,11 +37,11 @@ public class ReservaController {
             @CookieValue(value = "id", defaultValue="0") String id,
             @CookieValue(value = "rol", defaultValue="0") String rol,
             Model model){
-
+        Usuario usuario = usuarioService.getById(Integer.parseInt(id));
         Calendar c = Calendar.getInstance();
         String startDate = c.get(Calendar.YEAR)+"/"+(c.get(Calendar.MONTH) + 1)+"/"+c.get(Calendar.DATE);
         Date date = new Date(startDate);
-        List<Reserva> reservas =  reservaService.listAll();
+        List<Reserva> reservas =  reservaService.filter(date);
         List<Cancha> canchas = canchaService.listAll(); 
         model.addAttribute("canchas", canchas);
         model.addAttribute("horario", getHorario());
@@ -50,7 +51,7 @@ public class ReservaController {
         model.addAttribute("fecha", date);
         
         
-        Usuario usuario = usuarioService.getById(Integer.parseInt(id));
+        
         model.addAttribute("id", id);
         model.addAttribute("rol", rol);
         model.addAttribute("usuario", usuario);
@@ -67,19 +68,15 @@ public class ReservaController {
         ) {
         
         Usuario user = usuarioService.getById(Integer.parseInt(id));
-        if(user==null){
-            System.out.println("USUARIO == null");
-        }else{
-            System.out.println(user.toString());
-        }
         Reserva reserva = new Reserva();
         if(user!=null){
             reserva.setCancha(canchaService.getById(cancha));
             reserva.setFecha(fecha);
             reserva.setHoraInicio(hora);
             reserva.setUsuario(user);
-            System.out.println(reserva.toString());
-            reservaService.saveReserva(reserva);
+            Reserva a = reservaService.saveReserva(reserva);
+            user.addReservas(reserva);
+            usuarioService.saveUsuario(user);
             List<Cancha> canchas = canchaService.listHabilitadas("Habilitada");
             List<Reserva> reservas = reservaService.filter(reserva.getFecha());
             model.addAttribute("canchas", canchas);
@@ -105,6 +102,7 @@ public class ReservaController {
             Model model) {
         Usuario user = usuarioService.getById(Integer.parseInt(id));
         List<Reserva> reservas = user.getReservas();
+        System.out.println("MIS PARTIDAS::"+ user.getPartidas().size());
         model.addAttribute("reservas", reservas);
         model.addAttribute("reservaActive", "active");
 
@@ -146,6 +144,7 @@ public class ReservaController {
             @CookieValue(value = "id", defaultValue="0") String id_cookie,
             @CookieValue(value = "rol", defaultValue="0") String rol,  
             Model model) {
+
         List<Reserva> reservas= reservaService.filter(fecha);
         List<Cancha> canchas = canchaService.listHabilitadas("Habilitada");
         model.addAttribute("canchas", canchas);
