@@ -41,8 +41,22 @@
                     </div>
                     
                 </div>
+                <div class="col-sm-2 text-white" >
+                    <ul>
+                        <li th:if="${partida.tipo}== 1">Tipo: Masculino</li>
+                        <li th:if="${partida.tipo}== 2">Tipo: Femenino</li>
+                        <li th:if="${partida.tipo}== 3">Tipo: Mixto</li>
+                        <li th:if="${partida.nivel}== 6">Nivel: Sexta</li>
+                        <li th:if="${partida.nivel}== 5">Nivel: Quinta</li>
+                        <li th:if="${partida.nivel}== 4">Nivel: Cuarta</li>
+                        <li th:if="${partida.nivel}== 3">Nivel: Tercera</li>
+                        <li th:if="${partida.nivel}== 2">Nivel: Segunda</li>
+                        <li th:if="${partida.nivel}== 1">Nivel: Open</li>
+
+                    </ul>
+                </div>
                 
-                <div class="col-sm-3" >
+                <div class="col-sm-1" >
                     <button type="button" class="btn btn-secondary" 
                     th:attr="onclick=|ingresar(${partida.idReserva})|"
                     >Ingresar</button>
