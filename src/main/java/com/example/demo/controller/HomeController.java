@@ -91,12 +91,13 @@ public class HomeController {
     	response.addCookie(cookie);
     	cookie=new Cookie("rol", usuario.getRol().toString());
     	response.addCookie(cookie);
+		emailService.sendEmailRegister(usuario);
     	return "redirect:/";
     }
 
     @GetMapping("/email")
     public String emailTest(){
-        this.emailService.sendEmail("padel.go.cli@gmail.com");
+        emailService.sendEmail("padel.go.cli@gmail.com");
         return "redirect:/";
     }
 

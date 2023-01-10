@@ -57,4 +57,19 @@ public class EmailServiceImplementation implements EmailService{
             System.out.println(e);
         }
     }
+    
+    public void sendEmailRegister(Usuario user){
+        MimeMessage message = javaMailSender.createMimeMessage();
+        try{
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setFrom(email);
+            helper.setTo(user.getCorreo());
+            helper.setSubject("Cuenta creada!!");
+            helper.setText("Estimado "+user.getNombre()+" su cuenta de Padel Go ha sido creada");
+            javaMailSender.send(message);
+
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
 }
