@@ -27,8 +27,24 @@
             <h4>Buscar Partida</h4>
 
         </div>  
+
+        <div th:each="partida : ${partidas}" class="container bg-primary mt-4 ms-0 pt-3 pb-3">
+            <div class="row">
+                <h3 class="text-white col-sm-3 mb-3 ps-lg-3">Cancha <span th:text="${partida.cancha.id}"></span> : <span th:text="${partida.horaInicio}"></span></h3>
+                <div class="col-sm-3 mb-3">
+                    <div >
+                        <img  th:each="jugador : ${partida.jugadores}" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" height="40px" class="me-2">
+                        
+                    </div>
+                    
+                </div>
+                <div class="col-sm-3">
+                    <a type="button" class="btn btn-secondary" th:href="@{'/partida/addJugador/'+ ${partida.idReserva}}">Ingresar</a>
+                </div>
+        </div> 
     
     </div>
+    
 </div>
 
 <!-- Modal -->

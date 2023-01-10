@@ -44,7 +44,7 @@ public class Reserva {
         inverseJoinColumns = @JoinColumn(name="id_usuario", nullable = false)
     )
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<Usuario> juagadores;
+    private List<Usuario> jugadores;
 
 	@Column(name="hora_inicio")
 	@NotNull
@@ -127,7 +127,7 @@ public class Reserva {
 	}
 
 	public Reserva(Date fecha, @NotNull String horaInicio, String estado, Integer nivel, Integer categoria,
-			Integer tipo, Cancha cancha, Usuario usuario) {
+			Integer tipo, Cancha cancha, Usuario usuario, List<Usuario> jugadores) {
 		this.fecha = fecha;
 		this.horaInicio = horaInicio;
 		this.estado = estado;
@@ -136,17 +136,22 @@ public class Reserva {
 		this.tipo = tipo;
 		this.cancha = cancha;
 		this.usuario = usuario;
+		this.jugadores = new ArrayList<>();
 	}
 
 	public void setCancha(Cancha cancha) {
 		this.cancha = cancha;
 	}
 	
+
+
+
+
 	@Override
 	public String toString() {
-		return "Reserva [idReserva=" + idReserva + ", fecha=" + fecha + ", horaInicio=" + horaInicio + ", estado="
-				+ estado + ", nivel=" + nivel + ", categoria=" + categoria + ", tipo=" + tipo + ", cancha=" + cancha
-				+ ", usuario=" + usuario + "]";
+		return "Reserva [idReserva=" + idReserva + ", fecha=" + fecha + ", jugadores=" + jugadores + ", horaInicio="
+				+ horaInicio + ", estado=" + estado + ", nivel=" + nivel + ", categoria=" + categoria + ", tipo=" + tipo
+				+ ", cancha=" + cancha + ", usuario=" + usuario + "]";
 	}
 
 	public Integer getIdReserva() {
@@ -165,14 +170,22 @@ public class Reserva {
 		this.usuario = usuario;
 	}
 
-	public List<Usuario> getJuagadores() {
-		if(juagadores==null){
+	public List<Usuario> getJugadores() {
+		if(jugadores==null){
 			return new ArrayList<Usuario>();
 		}
-		return juagadores;
+		return jugadores;
 	}
 
-	public void setJuagadores(List<Usuario> juagadores) {
-		this.juagadores = juagadores;
+
+	public void setJugadores(List<Usuario> juagadores) {
+		this.jugadores = juagadores;
 	}	
+
+	public void addJugador(Usuario jugador) {
+		if(jugadores==null){
+			jugadores = new ArrayList<>();
+		}
+		this.jugadores.add(jugador);
+	}
 }

@@ -32,7 +32,9 @@ public class ReservaServiceImplementation implements ReservaService {
 	@Override
 	public Reserva saveReserva(Reserva reserva) {
 		try {
+			System.out.println("GUARDAR RESERVAR");
 			return reservaRepository.save(reserva);	
+			
 		} catch (Exception e) {
 			System.out.println("No se pudo guardar la reserva: " + e.toString());
 		}
@@ -60,6 +62,12 @@ public class ReservaServiceImplementation implements ReservaService {
 	@Override
 	public List<Reserva> listByDate(String fecha) {
 		return reservaRepository.findReservaByFecha(fecha);
+	}
+	
+	public List<Reserva> partidasDisponibles(){
+		List<Reserva>lista = reservaRepository.getPartidasDisponibles();
+		return  lista.stream().filter(r -> r.getJugadores().size() < 4).toList();
+		
 	}
 
 }

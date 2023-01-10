@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -16,58 +17,57 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name="usuario")
+@Table(name = "usuario")
 public class Usuario {
-	
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_usuario")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_usuario")
 	private Integer id;
-	
-	@Column(name="rut")
+
+	@Column(name = "rut")
 	@NotNull
 	private String rut;
-	
-	@Column(name="nombre")
+
+	@Column(name = "nombre")
 	@NotNull
 	private String nombre;
-	
-	@Column(name="apellido")
+
+	@Column(name = "apellido")
 	@NotNull
 	private String apellido;
-	
-	@Column(name="genero")
+
+	@Column(name = "genero")
 	@NotNull
 	private String genero;
-	
-	@Column(name="correo")
+
+	@Column(name = "correo")
 	@NotNull
 	@Email
 	private String correo;
-	
-	@Column(name="password")
+
+	@Column(name = "password")
 	@NotNull
 	private String password;
-	
-	@Column(name="rol")
+
+	@Column(name = "rol")
 	private Integer rol;
 
-	@Column(name="estado")
+	@Column(name = "estado")
 	private String estado;
-	
-	@ManyToMany(mappedBy = "juagadores")
-    private List<Reserva> partidas;
+
+	@ManyToMany(mappedBy = "jugadores")
+	private List<Reserva> partidas;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "usuario")
 	private List<Reserva> reservas;
 
-	
 	public Usuario() {
 	}
-	
+
 	public Usuario(Integer id, @NotNull String rut, @NotNull String nombre, @NotNull String apellido,
-			@NotNull String genero, @NotNull @Email String correo, @NotNull String password, Integer rol, String estado) {
+			@NotNull String genero, @NotNull @Email String correo, @NotNull String password, Integer rol,
+			String estado) {
 		this.id = id;
 		this.rut = rut;
 		this.nombre = nombre;
@@ -82,12 +82,14 @@ public class Usuario {
 	public Integer getId() {
 		return id;
 	}
-public String getEstado() {
-	return estado;
-}
-public void setEstado(String estado) {
-	this.estado = estado;
-}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
 
 	public void setId(Integer id) {
 		this.id = id;
@@ -150,6 +152,7 @@ public void setEstado(String estado) {
 	}
 
 	public List<Reserva> getReservas() {
+		if(reservas==null) return new ArrayList<Reserva>();
 		return reservas;
 	}
 
@@ -157,6 +160,11 @@ public void setEstado(String estado) {
 		this.reservas = reservas;
 	}
 
+	public void addReservas(Reserva reserva) {
+		this.reservas.add(reserva);
+	}
+
+	
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", rut=" + rut + ", nombre=" + nombre + ", apellido=" + apellido + ", genero="
@@ -164,10 +172,22 @@ public void setEstado(String estado) {
 				+ "]";
 	}
 
-	
-	
-	
-	
-	
+	public List<Reserva> getPartidas() {
+		if(partidas==null) {
+			partidas= new ArrayList<>();
+		}
+		return partidas;
+	}
+
+	public void addPartidas(Reserva partida) {
+		if(partidas==null) {
+			partidas= new ArrayList<>();
+		}
+		partidas.add(partida);
+	}
+
+	public void setPartidas(List<Reserva> partidas) {
+		this.partidas = partidas;
+	}
 
 }

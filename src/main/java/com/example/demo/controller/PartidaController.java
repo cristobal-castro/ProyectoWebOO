@@ -41,6 +41,40 @@ public class PartidaController {
         @CookieValue(value = "id", defaultValue = "0") String id_cookie,
         @CookieValue(value = "rol", defaultValue = "0") String rol
         ){
+            List<Reserva> lista = reservaService.partidasDisponibles();
+            System.out.println("LISTA.SIZE ::: "+ lista.size() );
+            model.addAttribute("partidas", lista );
+            Usuario usuario = new Usuario();
+            usuario = usuarioService.getById(Integer.parseInt(id_cookie));
+            model.addAttribute("id", id_cookie);
+            model.addAttribute("rol", rol);
+            model.addAttribute("usuario", usuario);
+
+        return "partida/lista";
+    }
+    
+    @GetMapping("/addJugador/{idReserva}")
+    public String agregarJugador(
+        Model model,
+        @CookieValue(value = "id", defaultValue = "0") String id_cookie,
+        @CookieValue(value = "rol", defaultValue = "0") String rol,
+        @PathVariable("idReserva") Integer idReserva
+        ){
+            Usuario usuario = new Usuario();
+            usuario = usuarioService.getById(Integer.parseInt(id_cookie));
+            Reserva reserva = reservaService.getById(idReserva);
+            reserva.addJugador(usuario);
+            usuario.addPartidas(reserva);
+            reservaService.saveReserva(reserva);
+            usuarioService.saveUsuario(usuario);
+            
+            List<Reserva> lista = reservaService.partidasDisponibles();
+            model.addAttribute("partidas", lista );
+
+            model.addAttribute("id", id_cookie);
+            model.addAttribute("rol", rol);
+            model.addAttribute("usuario", usuario);
+
         return "partida/lista";
     }
 
@@ -93,14 +127,17 @@ public class PartidaController {
         @CookieValue(value = "id", defaultValue = "0") String id_cookie,
         @CookieValue(value = "rol", defaultValue = "0") String rol
         ){
-        Usuario user = usuarioService.getById(2);
-        //System.out.println(user.toString());
-        reserva.setUsuario(user);
+            Usuario usuario = usuarioService.getById(Integer.parseInt(id_cookie));
+            System.out.println("ID_COOKIE:: " + id_cookie);
+        if(id_cookie.equals("0")){
+            return "redirect:/login";
+        }
+        reserva.setUsuario(usuario);
         reserva.setTipo(1);
-        reserva.getJuagadores().add(user);
         Reserva r = reservaService.saveReserva(reserva);
-
-        Usuario usuario = new Usuario();
+        r.addJugador(usuario);
+        usuario.addPartidas(r);
+        usuarioService.saveUsuario(usuario);
 		usuario = usuarioService.getById(Integer.parseInt(id_cookie));
 		model.addAttribute("id", id_cookie);
 		model.addAttribute("rol", rol);
