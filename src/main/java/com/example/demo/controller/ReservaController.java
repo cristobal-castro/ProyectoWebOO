@@ -13,8 +13,12 @@ import com.example.demo.model.Cancha;
 import com.example.demo.model.Reserva;
 import com.example.demo.model.Usuario;
 import com.example.demo.services.CanchaServiceImplementation;
+import com.example.demo.services.EmailServiceImplementation;
 import com.example.demo.services.ReservaServiceImplementation;
 import com.example.demo.services.UsuarioServiceImplementation;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,11 +30,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class ReservaController {
     @Autowired
     private ReservaServiceImplementation reservaService;
-
     @Autowired
     private CanchaServiceImplementation canchaService;
     @Autowired
 	private UsuarioServiceImplementation usuarioService;
+    @Autowired
+    private EmailServiceImplementation emailService;
 
     @GetMapping("/lista")
     public String lista(
@@ -49,12 +54,11 @@ public class ReservaController {
         model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
         model.addAttribute("reservaActive", "active");
         model.addAttribute("fecha", date);
-        
-        
-        
+    
         model.addAttribute("id", id);
         model.addAttribute("rol", rol);
         model.addAttribute("usuario", usuario);
+
         return "reservas/lista";
     }
 
@@ -85,7 +89,9 @@ public class ReservaController {
             model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
             model.addAttribute("reservaActive", "active");
             model.addAttribute("fecha", reserva.getFecha());
-        } 
+
+            emailService.sendEmailReserva(user, fecha, hora, cancha);
+        }
 		model.addAttribute("id", id);
 		model.addAttribute("rol", rol);
 		model.addAttribute("usuario", user);
@@ -104,6 +110,7 @@ public class ReservaController {
         List<Reserva> reservas = user.getReservas();
         System.out.println("MIS PARTIDAS::"+ user.getPartidas().size());
         model.addAttribute("reservas", reservas);
+
         model.addAttribute("reservaActive", "active");
 
         Usuario usuario = new Usuario();
@@ -135,6 +142,7 @@ public class ReservaController {
         model.addAttribute("reservaActive", "active");
         
 
+
         return "reservas/mis-reservas";
     }
 
@@ -162,6 +170,8 @@ public class ReservaController {
         
         return "reservas/lista";
     }
+
+
 
     public List<String[]> getHorarioResevas(List<Reserva> reservas, List<Cancha> canchas) {
         List<String[]> lista = new ArrayList<>();
@@ -193,5 +203,6 @@ public class ReservaController {
         lista.add("20:20");
         return lista;
     }
+
 
 }
