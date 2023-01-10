@@ -29,6 +29,16 @@
     padding-bottom: 5px;
     border-radius: 10px;
 }
+.horaAmarilla {
+    text-decoration: none;
+    background-color: yellow;
+    color: white;
+    padding-left: 70px;
+    padding-right: 70px;
+    padding-top: 4px;
+    padding-bottom: 5px;
+    border-radius: 10px;
+}
 .horario{
     margin: 15px;
 }

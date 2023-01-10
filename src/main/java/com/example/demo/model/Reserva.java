@@ -41,6 +41,30 @@ public class Reserva {
 	private Integer categoria;
 	private Integer tipo;
 
+	public Integer getNivel() {
+		return nivel;
+	}
+
+	public void setNivel(Integer nivel) {
+		this.nivel = nivel;
+	}
+
+	public Integer getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Integer categoria) {
+		this.categoria = categoria;
+	}
+
+	public Integer getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Integer tipo) {
+		this.tipo = tipo;
+	}
+
 	@ManyToOne(fetch = FetchType.LAZY)	
 	@JoinColumn(name = "id_cancha")
 	private Cancha cancha;
@@ -82,11 +106,11 @@ public class Reserva {
 		this.cancha = cancha;
 	}
 	
-
 	@Override
 	public String toString() {
 		return "Reserva [idReserva=" + idReserva + ", fecha=" + fecha + ", horaInicio=" + horaInicio + ", estado="
-				+ estado + ", cancha=" + cancha + "]";
+				+ estado + ", nivel=" + nivel + ", categoria=" + categoria + ", tipo=" + tipo + ", cancha=" + cancha
+				+ ", usuario=" + usuario + "]";
 	}
 
 	public Integer getIdReserva() {

@@ -152,6 +152,13 @@ public void setEstado(String estado) {
 	public void setReservas(List<Reserva> reservas) {
 		this.reservas = reservas;
 	}
+
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", rut=" + rut + ", nombre=" + nombre + ", apellido=" + apellido + ", genero="
+				+ genero + ", correo=" + correo + ", password=" + password + ", rol=" + rol + ", estado=" + estado
+				+ ", reservas=" + reservas + "]";
+	}
 	
 	
 	

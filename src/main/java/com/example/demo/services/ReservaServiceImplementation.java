@@ -30,13 +30,13 @@ public class ReservaServiceImplementation implements ReservaService {
 	}
 
 	@Override
-	public void saveReserva(Reserva reserva) {
+	public Reserva saveReserva(Reserva reserva) {
 		try {
-			reservaRepository.save(reserva);	
+			return reservaRepository.save(reserva);	
 		} catch (Exception e) {
 			System.out.println("No se pudo guardar la reserva: " + e.toString());
 		}
-		
+		return null;
 
 	}
 

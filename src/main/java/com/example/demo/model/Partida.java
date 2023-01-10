@@ -17,13 +17,13 @@ public class Partida {
     @ManyToOne
     @MapsId("idUsuario")
     @JoinColumn(name = "id_usuario")
-    private Usuario place;
+    private Usuario usuario;
 
     
     @ManyToOne
     @MapsId("idReserva")
     @JoinColumn(name = "id_reserva")
-    private Reserva car;
+    private Reserva reserva;
 
 
     public PartidaKey getId() {
@@ -36,23 +36,24 @@ public class Partida {
     }
 
 
-    public Usuario getPlace() {
-        return place;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
 
-    public void setPlace(Usuario place) {
-        this.place = place;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
 
-    public Reserva getCar() {
-        return car;
+    public Reserva getReserva() {
+        return reserva;
     }
 
 
-    public void setCar(Reserva car) {
-        this.car = car;
+    public void setReserva(Reserva reserva) {
+        this.reserva = reserva;
     }
+
     
 }
