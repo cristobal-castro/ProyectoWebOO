@@ -56,7 +56,6 @@ public class ReservaController {
         model.addAttribute("reservaActive", "active");
         model.addAttribute("fecha", date);
         
-        
         Usuario usuario = usuarioService.getById(Integer.parseInt(id));
         model.addAttribute("id", id);
         model.addAttribute("rol", rol);
@@ -88,6 +87,7 @@ public class ReservaController {
             model.addAttribute("horarioReserva", getHorarioResevas(reservas, canchas));
             model.addAttribute("reservaActive", "active");
             model.addAttribute("fecha", reserva.getFecha());
+            emailService.sendEmailReserva(user, fecha, hora, cancha);
         }
 		model.addAttribute("id", id);
 		model.addAttribute("rol", rol);
@@ -108,7 +108,8 @@ public class ReservaController {
         List<Reserva> misReservas = new ArrayList<>();
 
         for (Reserva reserva : reservas) {
-            if(""+reserva.getUsuario().getId()==id){
+            if(reserva.getUsuario().getId()==Integer.parseInt(id)){
+                System.out.println("true");
                 misReservas.add(reserva);
             }
         }
@@ -141,8 +142,7 @@ public class ReservaController {
 		model.addAttribute("id", id_cookie);
 		model.addAttribute("rol", rol);
 		model.addAttribute("usuario", usuario);
-        
-
+    
         return "reservas/mis-reservas";
     }
 
